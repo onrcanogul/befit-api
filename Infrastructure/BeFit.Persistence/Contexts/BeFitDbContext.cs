@@ -24,7 +24,7 @@ namespace BeFit.Persistence.Contexts
         public DbSet<Carbohydrate> Carbohydrate { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<PostImage> PostImages { get; set; }
-        public DbSet<FoodImage> FoodImages { get; set; }
+        public DbSet<NutrientImage> FoodImages { get; set; }
         public DbSet<CategoryImage> CategoryImages { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }
@@ -48,7 +48,7 @@ namespace BeFit.Persistence.Contexts
 
             builder.Entity<Image>()
             .HasDiscriminator<string>("Discriminator")
-            .HasValue<FoodImage>("FoodImage")
+            .HasValue<NutrientImage>("FoodImage")
             .HasValue<CategoryImage>("CategoryImage")
             .HasValue<PostImage>("PostImage");
             builder.Entity<Image>()

@@ -35,7 +35,7 @@ namespace BeFit.Persistence.Repositories
             var query = _context.AsQueryable();
             return predicate == null ? query : query.Where(predicate);     
         }
-        public void UpdateAsync(T entity)
+        public void Update(T entity)
         {
             _context.Update(entity);
         }

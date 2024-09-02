@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BeFit.Application.DataTransferObjects;
+using BeFit.Application.DataTransferObjects.Nutrients.CreateDtos;
 using BeFit.Domain.Entities;
 using BeFit.Domain.Entities.Abstract;
 using BeFit.Domain.Entities.Identity;
@@ -15,7 +16,7 @@ namespace BeFit.Application.Mapper
             CreateMap<CategoryDto, Category>().ReverseMap();
             CreateMap<UserDto, User>().ReverseMap();
             CreateMap<CategoryImage, CategoryImageDto>().ReverseMap();
-            CreateMap<FoodImage, FoodImageDto>().ReverseMap();
+            CreateMap<NutrientImage, NutrientImageDto>().ReverseMap();
             CreateMap<PostImage, PostImageDto>().ReverseMap();
             CreateMap<CarbohydrateDto, Carbohydrate>().ReverseMap();
             CreateMap<FatDto, Fat>().ReverseMap();
@@ -35,6 +36,12 @@ namespace BeFit.Application.Mapper
             CreateMap<CommentDto, Comment>().ReverseMap();
             CreateMap<NutrientPropertiesDto, NutrientProperties>().ReverseMap();
             CreateMap<UserProperties, UserPropertiesDto>().ReverseMap();
+            CreateMap<CreateNutrientDto, FoodDto>().ReverseMap();
+            CreateMap<CreateNutrientDto, DrinkDto>().ReverseMap();
+            CreateMap<CreateNutrientDto, NutrientDto>().ReverseMap();
+            CreateMap<UpdateNutrientDto, NutrientDto>().ReverseMap();
+            CreateMap<UpdateNutrientDto, NutrientDto>().ReverseMap();
+            CreateMap<UpdateNutrientDto, NutrientDto>().ReverseMap();
         }
     }
 }
