@@ -4,5 +4,6 @@ namespace BeFit.Domain.Entities
 {
     public class Drink : Nutrient
     {
+
     }
 }

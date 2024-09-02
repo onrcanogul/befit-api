@@ -4,7 +4,9 @@
     {
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
-        public Guid PropertyId { get; set; }
+        public Guid PropertiesId { get; set; }
         public NutrientPropertiesDto Properties { get; set; } = null!;
+        public Guid ImageId { get; set; }
+        public NutrientImageDto Image { get; set; } = null!;
     }
 }

@@ -11,7 +11,7 @@ namespace BeFit.Application.Repositories
         IQueryable<T> GetListQueryable(Expression<Func<T, bool>>? predicate = null);
         IQueryable<T> GetByIdQueryable(Guid id);
         Task<T> CreateAsync(T entity);
-        void UpdateAsync(T entity);
+        void Update(T entity);
         void Delete(T entity);
         Task CreateRangeAsync(List<T> entities);
         void UpdateRangeAsync(List<T> entities);

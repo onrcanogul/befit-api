@@ -2,7 +2,7 @@
 
 namespace BeFit.Application.DataTransferObjects
 {
-    public class FoodImageDto : ImageDto
+    public class NutrientImageDto : ImageDto
     {
         public Guid FoodId { get; set; }
         public FoodDto Food { get; set; } = null!;
