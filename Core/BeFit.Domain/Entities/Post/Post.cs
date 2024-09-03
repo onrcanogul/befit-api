@@ -12,5 +12,6 @@ namespace BeFit.Domain.Entities
         public List<PostImage> Images { get; set; } = new();
         public List<PostDislike> Dislikes { get; set; } = new();
         public List<PostLike> Likes { get; set; } = new();
+        public List<Comment> Comments { get; set; } = new();
     }
 }

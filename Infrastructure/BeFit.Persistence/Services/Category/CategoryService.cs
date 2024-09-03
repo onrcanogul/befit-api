@@ -73,7 +73,6 @@ namespace BeFit.Persistence.Services
             await uow.SaveChangesAsync();
 
             return ServiceResponse<NoContent>.Success(StatusCodes.Status204NoContent);
-
         }
 
 

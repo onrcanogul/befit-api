@@ -11,5 +11,6 @@ namespace BeFit.Application.DataTransferObjects
         public List<PostImageDto> Images { get; set; } = new();
         public List<PostDislikeDto> Dislikes { get; set; } = new();
         public List<PostLikeDto> Likes { get; set; } = new();
+        public List<CommentDto> Comments { get; set; } = new();
     }
 }

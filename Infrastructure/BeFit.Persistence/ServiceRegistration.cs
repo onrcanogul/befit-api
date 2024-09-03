@@ -1,6 +1,13 @@
 ﻿using BeFit.Application.Repositories;
+using BeFit.Application.Services;
+using BeFit.Application.Services.Category;
+using BeFit.Application.Services.Identity;
+using BeFit.Application.Services.Post;
 using BeFit.Persistence.Contexts;
 using BeFit.Persistence.Repositories;
+using BeFit.Persistence.Services;
+using BeFit.Persistence.Services.Identity;
+using BeFit.Persistence.Services.Post;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +21,14 @@ namespace BeFit.Persistence
             services.AddDbContext<BeFitDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("PostgreSQL")));
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserPropertyService, UserPropertyService>();
+            services.AddScoped<IFoodService, FoodService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IPostDislikeService, PostDislikeService>();
+            services.AddScoped<IPostLikeService, PostLikeService>();
+            services.AddScoped<IPostService, PostService>();
 
             return services;
         }
