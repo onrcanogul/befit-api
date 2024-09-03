@@ -17,15 +17,7 @@ namespace BeFit.Persistence.Services
         {
             List<Food> list = await Repository.GetListQueryable()
                 .Include(f => f.Properties)
-                    .ThenInclude(p => p.Protein)
-                .Include(f => f.Properties)
-                    .ThenInclude(p => p.Fat)
-                .Include(f => f.Properties)
-                    .ThenInclude(p => p.Carbohydrate)
-                .Include(f => f.Properties)
-                    .ThenInclude(p => p.Minerals)
-                .Include(f => f.Properties)
-                    .ThenInclude(p => p.Vitamins).ToListAsync();
+                .ToListAsync();
 
             List<FoodDto> foods = mapper.Map<List<FoodDto>>(list);
             return ServiceResponse<List<FoodDto>>.Success(foods, StatusCodes.Status200OK);
@@ -34,15 +26,7 @@ namespace BeFit.Persistence.Services
         {
             var food = await Repository.GetByIdQueryable(id)
                 .Include(f => f.Properties)
-                    .ThenInclude(p => p.Protein)
-                .Include(f => f.Properties)
-                    .ThenInclude(p => p.Fat)
-                .Include(f => f.Properties)
-                    .ThenInclude(p => p.Carbohydrate)
-                .Include(f => f.Properties)
-                    .ThenInclude(p => p.Minerals)
-                .Include(f => f.Properties)
-                    .ThenInclude(p => p.Vitamins).FirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             var dto = mapper.Map<FoodDto>(food);
 
             return ServiceResponse<FoodDto>.Success(dto, StatusCodes.Status200OK);
