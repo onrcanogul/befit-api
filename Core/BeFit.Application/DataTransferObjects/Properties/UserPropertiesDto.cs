@@ -11,9 +11,9 @@
         public decimal FatBurnCalories { get; set; }
         public decimal WeightGainCalories { get; set; }
         public decimal MaintenanceCalories { get; set; }
-        public ProteinDto NeededProtein { get; set; } = null!;
-        public CarbohydrateDto NeededCarbohydrate { get; set; } = null!;
-        public FatDto NeededFat { get; set; } = null!;
+        public ProteinDto NeededProtein { get; set; }  
+        public CarbohydrateDto NeededCarbohydrate { get; set; }
+        public FatDto NeededFat { get; set; }
         public string UserId { get; set; } = null!;
         public UserDto User { get; set; } = null!;
     }

@@ -6,6 +6,5 @@
         public string Description { get; set; } = null!;
         public decimal Calories { get; set; }
         public NutrientPropertiesDto Properties { get; set; } = null!;
-
     }
 }
