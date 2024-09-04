@@ -16,4 +16,8 @@
     <ProjectReference Include="..\BeFit.Domain\BeFit.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Auth\Queries\" />
+  </ItemGroup>
+
 </Project>
