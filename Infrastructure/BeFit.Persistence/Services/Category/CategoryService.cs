@@ -27,15 +27,15 @@ namespace BeFit.Persistence.Services
             return ServiceResponse<List<CategoryDto>>.Success(list, StatusCodes.Status200OK);
         }
 
-        public async Task<ServiceResponse<CategoryDto>> GetById()
+        public async Task<ServiceResponse<CategoryDto>> GetById(Guid id)
         {
-            var category = await repository.GetListQueryable()
+            var category = await repository.GetByIdQueryable(id)
                 .Include(x => x.Drinks)
                     .ThenInclude(x => x.Properties)
                 .Include(x => x.Foods)
                     .ThenInclude(x => x.Properties)
                  .Include(x => x.Images)
-                .ToListAsync();
+                .FirstOrDefaultAsync();
 
             var list = mapper.Map<CategoryDto>(category);
 
