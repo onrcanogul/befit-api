@@ -27,10 +27,18 @@ namespace BeFit.Persistence.Services.Post
         {
             var like = await repository.GetListQueryable().Where(x => x.PostId == postId && x.UserId == userId).FirstOrDefaultAsync();
 
-            if(like != null)
+            if (like != null)
                 repository.Delete(like);
             else
-                await repository.CreateAsync(like);
+            {
+                PostLike createdLike = new()
+                {
+                    UserId = userId,
+                    PostId = postId
+                };
+
+                await repository.CreateAsync(createdLike);
+            }
 
             await uow.SaveChangesAsync();
 
