@@ -1,6 +1,4 @@
-﻿using BeFit.Application.DataTransferObjects;
-using BeFit.Application.DataTransferObjects.Nutrients.CreateDtos;
-using BeFit.Application.Common;
+﻿using BeFit.Application.DataTransferObjects.Nutrients.CreateDtos;
 
 namespace BeFit.Application.Services
 {
