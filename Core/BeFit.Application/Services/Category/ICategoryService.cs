@@ -1,7 +1,4 @@
-﻿using BeFit.Application.Common;
-using BeFit.Application.DataTransferObjects;
-
-namespace BeFit.Application.Services.Category
+﻿namespace BeFit.Application.Services.Category
 {
     public interface ICategoryService
     {

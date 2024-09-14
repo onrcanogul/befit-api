@@ -1,7 +1,7 @@
 ﻿namespace BeFit.Application.Features.Category.Queries.GetById
 {
     public record GetCategoryByIdRequest(Guid Id) : IRequest<GetCategoryByIdResponse>;
-    public record GetCategoryByIdResponse(ServiceResponse<CategoryDto> category);
+    public record GetCategoryByIdResponse(ServiceResponse<CategoryDto> Category);
 
     public class GetCategoryByIdHandler(ICategoryService service) : IRequestHandler<GetCategoryByIdRequest, GetCategoryByIdResponse>
     {

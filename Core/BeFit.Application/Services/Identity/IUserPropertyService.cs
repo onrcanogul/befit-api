@@ -1,7 +1,4 @@
-﻿using BeFit.Application.Common;
-using BeFit.Application.DataTransferObjects;
-
-namespace BeFit.Application.Services.Identity
+﻿namespace BeFit.Application.Services.Identity
 {
     public interface IUserPropertyService
     {

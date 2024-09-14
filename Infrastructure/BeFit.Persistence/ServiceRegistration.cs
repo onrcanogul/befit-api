@@ -3,6 +3,9 @@ using BeFit.Application.Services;
 using BeFit.Application.Services.Category;
 using BeFit.Application.Services.Identity;
 using BeFit.Application.Services.Post;
+using BeFit.Application.Services.Token;
+using BeFit.Domain.Entities.Identity;
+using BeFit.Infrastructure.Services;
 using BeFit.Persistence.Contexts;
 using BeFit.Persistence.Repositories;
 using BeFit.Persistence.Services;
@@ -16,9 +19,13 @@ namespace BeFit.Persistence
 {
     public static class ServiceRegistration
     {
-        public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration) 
+        public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<BeFitDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("PostgreSQL")));
+            services.AddIdentity<User, Role>(opt =>
+            {
+
+            }).AddEntityFrameworkStores<BeFitDbContext>();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<ICategoryService, CategoryService>();
@@ -29,6 +36,8 @@ namespace BeFit.Persistence
             services.AddScoped<IPostDislikeService, PostDislikeService>();
             services.AddScoped<IPostLikeService, PostLikeService>();
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ITokenHandler, TokenHandler>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

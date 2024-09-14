@@ -34,7 +34,7 @@ namespace BeFit.Persistence.Services.Identity
 
         private decimal CalculateMaintenanceCalories(UserPropertiesDto model)
         {
-            return default;
+            return model.Activity!.ActivityCoefficient * model.BMR;
         }
         private decimal CalculateFatBurnCalories(UserPropertiesDto model)
         {
@@ -42,23 +42,38 @@ namespace BeFit.Persistence.Services.Identity
         }
         private decimal CalculateWeightGainCalories(UserPropertiesDto model)
         {
-            return default;
+            var calorie = CalculateMaintenanceCalories(model);
+            return calorie += (calorie * (decimal)0.2);
         }
         private decimal CalculateSuggestedWeight(UserPropertiesDto model)
         {
-            return default;
+            return (decimal)24.9 * (model.Height * model.Height);
         }
         private decimal CalculateSuggestedFatRate(UserPropertiesDto model)
         {
-            return default;
+            var fatRate = ((decimal)1.20 * model.Weight / (model.Height * model.Height)) + ((decimal)0.23 * (decimal)model.User.Age);
+
+            switch (model.User.Gender)
+            {
+                case Gender.Male:
+                    fatRate -= (decimal)5.4;
+                    break;
+                case Gender.Female:
+                    fatRate -= (decimal)16.2;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return fatRate;
         }
-        private decimal CalculateNeededProtein(UserPropertiesDto model)
+        private decimal CalculateNeededProtein(UserPropertiesDto model) //bunları karara bağlamak lazım --> yağ yakmak, kilo kazanmak vsvs.
         {
-            return default;
+            return model.Weight * model.Activity!.ActivityCoefficient;
         }
         private decimal CalculateNeededFat(UserPropertiesDto model)
         {
-            return default;
+            return (model.DailyCalories * (decimal)0.25)/9;
         }
         private decimal CalculateNeededCarb(UserPropertiesDto model)
         {

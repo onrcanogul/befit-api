@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BeFit.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class initial_create : Migration
+    public partial class mig_1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,6 +35,8 @@ namespace BeFit.Persistence.Migrations
                     Surname = table.Column<string>(type: "text", nullable: false),
                     Gender = table.Column<int>(type: "integer", nullable: false),
                     Age = table.Column<int>(type: "integer", nullable: false),
+                    RefreshToken = table.Column<string>(type: "text", nullable: false),
+                    RefreshTokenExpiration = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -61,58 +63,13 @@ namespace BeFit.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Minerals",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Calcium = table.Column<decimal>(type: "numeric", nullable: false),
-                    Sulfur = table.Column<decimal>(type: "numeric", nullable: false),
-                    Iron = table.Column<decimal>(type: "numeric", nullable: false),
-                    Potassium = table.Column<decimal>(type: "numeric", nullable: false),
-                    Sodium = table.Column<decimal>(type: "numeric", nullable: false),
-                    Magnesium = table.Column<decimal>(type: "numeric", nullable: false),
-                    Phosphorus = table.Column<decimal>(type: "numeric", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Minerals", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Salt",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Weight = table.Column<decimal>(type: "numeric", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Salt", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Vitamins",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    B2 = table.Column<decimal>(type: "numeric", nullable: false),
-                    B1 = table.Column<decimal>(type: "numeric", nullable: false),
-                    B3 = table.Column<decimal>(type: "numeric", nullable: false),
-                    B12 = table.Column<decimal>(type: "numeric", nullable: false),
-                    E = table.Column<decimal>(type: "numeric", nullable: false),
-                    FolicAcid = table.Column<decimal>(type: "numeric", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Vitamins", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -228,7 +185,9 @@ namespace BeFit.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -248,10 +207,12 @@ namespace BeFit.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    PropertyId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PropertiesId = table.Column<Guid>(type: "uuid", nullable: false),
                     Discriminator = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Food_CategoryId = table.Column<Guid>(type: "uuid", nullable: true)
+                    Food_CategoryId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -274,12 +235,10 @@ namespace BeFit.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Text = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    PostId = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    PostId1 = table.Column<Guid>(type: "uuid", nullable: false),
-                    ParentCommentId = table.Column<Guid>(type: "uuid", nullable: true)
+                    PostId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -291,54 +250,9 @@ namespace BeFit.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comments_Comments_ParentCommentId",
-                        column: x => x.ParentCommentId,
-                        principalTable: "Comments",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Comments_Posts_PostId1",
-                        column: x => x.PostId1,
+                        name: "FK_Comments_Posts_PostId",
+                        column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Carbohydrate",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Weight = table.Column<decimal>(type: "numeric", nullable: false),
-                    SugarWeight = table.Column<decimal>(type: "numeric", nullable: false),
-                    NutrientId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Carbohydrate", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Carbohydrate_Nutrients_NutrientId",
-                        column: x => x.NutrientId,
-                        principalTable: "Nutrients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Fat",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Weight = table.Column<decimal>(type: "numeric", nullable: false),
-                    CholesterolWeight = table.Column<decimal>(type: "numeric", nullable: false),
-                    NutrientId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Fat", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Fat_Nutrients_NutrientId",
-                        column: x => x.NutrientId,
-                        principalTable: "Nutrients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -352,8 +266,10 @@ namespace BeFit.Persistence.Migrations
                     FileName = table.Column<string>(type: "text", nullable: false),
                     Discriminator = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: true),
-                    FoodId = table.Column<Guid>(type: "uuid", nullable: true),
-                    PostId = table.Column<Guid>(type: "uuid", nullable: true)
+                    NutrientId = table.Column<Guid>(type: "uuid", nullable: true),
+                    PostId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -365,8 +281,8 @@ namespace BeFit.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Images_Nutrients_FoodId",
-                        column: x => x.FoodId,
+                        name: "FK_Images_Nutrients_NutrientId",
+                        column: x => x.NutrientId,
                         principalTable: "Nutrients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -379,18 +295,39 @@ namespace BeFit.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Protein",
+                name: "NutrientProperties",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Weight = table.Column<decimal>(type: "numeric", nullable: false),
-                    NutrientId = table.Column<Guid>(type: "uuid", nullable: false)
+                    NutrientId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Calories = table.Column<decimal>(type: "numeric", nullable: false),
+                    Protein = table.Column<decimal>(type: "numeric", nullable: false),
+                    Fat = table.Column<decimal>(type: "numeric", nullable: false),
+                    CholesterolWeight = table.Column<decimal>(type: "numeric", nullable: false),
+                    Carbohydrate = table.Column<decimal>(type: "numeric", nullable: false),
+                    Salt = table.Column<decimal>(type: "numeric", nullable: false),
+                    SugarWeight = table.Column<decimal>(type: "numeric", nullable: false),
+                    B2 = table.Column<decimal>(type: "numeric", nullable: false),
+                    B1 = table.Column<decimal>(type: "numeric", nullable: false),
+                    B3 = table.Column<decimal>(type: "numeric", nullable: false),
+                    B12 = table.Column<decimal>(type: "numeric", nullable: false),
+                    E = table.Column<decimal>(type: "numeric", nullable: false),
+                    FolicAcid = table.Column<decimal>(type: "numeric", nullable: false),
+                    Calcium = table.Column<decimal>(type: "numeric", nullable: false),
+                    Sulfur = table.Column<decimal>(type: "numeric", nullable: false),
+                    Iron = table.Column<decimal>(type: "numeric", nullable: false),
+                    Potassium = table.Column<decimal>(type: "numeric", nullable: false),
+                    Sodium = table.Column<decimal>(type: "numeric", nullable: false),
+                    Magnesium = table.Column<decimal>(type: "numeric", nullable: false),
+                    Phosphorus = table.Column<decimal>(type: "numeric", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Protein", x => x.Id);
+                    table.PrimaryKey("PK_NutrientProperties", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Protein_Nutrients_NutrientId",
+                        name: "FK_NutrientProperties_Nutrients_NutrientId",
                         column: x => x.NutrientId,
                         principalTable: "Nutrients",
                         principalColumn: "Id",
@@ -405,7 +342,9 @@ namespace BeFit.Persistence.Migrations
                     UserId = table.Column<string>(type: "text", nullable: false),
                     Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
                     CommentId = table.Column<Guid>(type: "uuid", nullable: true),
-                    PostId = table.Column<Guid>(type: "uuid", nullable: true)
+                    PostId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -438,7 +377,9 @@ namespace BeFit.Persistence.Migrations
                     UserId = table.Column<string>(type: "text", nullable: false),
                     Discriminator = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false),
                     CommentId = table.Column<Guid>(type: "uuid", nullable: true),
-                    PostId = table.Column<Guid>(type: "uuid", nullable: true)
+                    PostId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -464,62 +405,140 @@ namespace BeFit.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NutrientCalories",
+                name: "Carbohydrate",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    NutrientId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Calories = table.Column<decimal>(type: "numeric", nullable: false),
-                    ProteinId = table.Column<Guid>(type: "uuid", nullable: false),
-                    FatId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CarbohydrateId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SaltId = table.Column<Guid>(type: "uuid", nullable: false),
-                    VitaminsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MineralsId = table.Column<Guid>(type: "uuid", nullable: false)
+                    Weight = table.Column<decimal>(type: "numeric", nullable: false),
+                    SugarWeight = table.Column<decimal>(type: "numeric", nullable: false),
+                    NutrientPropertiesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NutrientCalories", x => x.Id);
+                    table.PrimaryKey("PK_Carbohydrate", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_NutrientCalories_Carbohydrate_CarbohydrateId",
-                        column: x => x.CarbohydrateId,
-                        principalTable: "Carbohydrate",
+                        name: "FK_Carbohydrate_NutrientProperties_NutrientPropertiesId",
+                        column: x => x.NutrientPropertiesId,
+                        principalTable: "NutrientProperties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Fat",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Weight = table.Column<decimal>(type: "numeric", nullable: false),
+                    CholesterolWeight = table.Column<decimal>(type: "numeric", nullable: false),
+                    NutrientPropertiesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fat", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_NutrientCalories_Fat_FatId",
-                        column: x => x.FatId,
-                        principalTable: "Fat",
+                        name: "FK_Fat_NutrientProperties_NutrientPropertiesId",
+                        column: x => x.NutrientPropertiesId,
+                        principalTable: "NutrientProperties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Minerals",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Calcium = table.Column<decimal>(type: "numeric", nullable: false),
+                    Sulfur = table.Column<decimal>(type: "numeric", nullable: false),
+                    Iron = table.Column<decimal>(type: "numeric", nullable: false),
+                    Potassium = table.Column<decimal>(type: "numeric", nullable: false),
+                    Sodium = table.Column<decimal>(type: "numeric", nullable: false),
+                    Magnesium = table.Column<decimal>(type: "numeric", nullable: false),
+                    Phosphorus = table.Column<decimal>(type: "numeric", nullable: false),
+                    NutrientPropertiesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Minerals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_NutrientCalories_Minerals_MineralsId",
-                        column: x => x.MineralsId,
-                        principalTable: "Minerals",
+                        name: "FK_Minerals_NutrientProperties_NutrientPropertiesId",
+                        column: x => x.NutrientPropertiesId,
+                        principalTable: "NutrientProperties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Protein",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Weight = table.Column<decimal>(type: "numeric", nullable: false),
+                    NutrientPropertiesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Protein", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_NutrientCalories_Nutrients_NutrientId",
-                        column: x => x.NutrientId,
-                        principalTable: "Nutrients",
+                        name: "FK_Protein_NutrientProperties_NutrientPropertiesId",
+                        column: x => x.NutrientPropertiesId,
+                        principalTable: "NutrientProperties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Salt",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Weight = table.Column<decimal>(type: "numeric", nullable: false),
+                    NutrientPropertiesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Salt", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_NutrientCalories_Protein_ProteinId",
-                        column: x => x.ProteinId,
-                        principalTable: "Protein",
+                        name: "FK_Salt_NutrientProperties_NutrientPropertiesId",
+                        column: x => x.NutrientPropertiesId,
+                        principalTable: "NutrientProperties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Vitamins",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    B2 = table.Column<decimal>(type: "numeric", nullable: false),
+                    B1 = table.Column<decimal>(type: "numeric", nullable: false),
+                    B3 = table.Column<decimal>(type: "numeric", nullable: false),
+                    B12 = table.Column<decimal>(type: "numeric", nullable: false),
+                    E = table.Column<decimal>(type: "numeric", nullable: false),
+                    FolicAcid = table.Column<decimal>(type: "numeric", nullable: false),
+                    NutrientPropertiesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Vitamins", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_NutrientCalories_Salt_SaltId",
-                        column: x => x.SaltId,
-                        principalTable: "Salt",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_NutrientCalories_Vitamins_VitaminsId",
-                        column: x => x.VitaminsId,
-                        principalTable: "Vitamins",
+                        name: "FK_Vitamins_NutrientProperties_NutrientPropertiesId",
+                        column: x => x.NutrientPropertiesId,
+                        principalTable: "NutrientProperties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -541,7 +560,9 @@ namespace BeFit.Persistence.Migrations
                     NeededProteinId = table.Column<Guid>(type: "uuid", nullable: false),
                     NeededCarbohydrateId = table.Column<Guid>(type: "uuid", nullable: false),
                     NeededFatId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -610,19 +631,14 @@ namespace BeFit.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Carbohydrate_NutrientId",
+                name: "IX_Carbohydrate_NutrientPropertiesId",
                 table: "Carbohydrate",
-                column: "NutrientId");
+                column: "NutrientPropertiesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_ParentCommentId",
+                name: "IX_Comments_PostId",
                 table: "Comments",
-                column: "ParentCommentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_PostId1",
-                table: "Comments",
-                column: "PostId1");
+                column: "PostId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserId",
@@ -645,9 +661,9 @@ namespace BeFit.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fat_NutrientId",
+                name: "IX_Fat_NutrientPropertiesId",
                 table: "Fat",
-                column: "NutrientId");
+                column: "NutrientPropertiesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_CategoryId",
@@ -655,9 +671,9 @@ namespace BeFit.Persistence.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Images_FoodId",
+                name: "IX_Images_NutrientId",
                 table: "Images",
-                column: "FoodId");
+                column: "NutrientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Images_PostId",
@@ -680,40 +696,15 @@ namespace BeFit.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NutrientCalories_CarbohydrateId",
-                table: "NutrientCalories",
-                column: "CarbohydrateId");
+                name: "IX_Minerals_NutrientPropertiesId",
+                table: "Minerals",
+                column: "NutrientPropertiesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NutrientCalories_FatId",
-                table: "NutrientCalories",
-                column: "FatId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NutrientCalories_MineralsId",
-                table: "NutrientCalories",
-                column: "MineralsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NutrientCalories_NutrientId",
-                table: "NutrientCalories",
+                name: "IX_NutrientProperties_NutrientId",
+                table: "NutrientProperties",
                 column: "NutrientId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NutrientCalories_ProteinId",
-                table: "NutrientCalories",
-                column: "ProteinId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NutrientCalories_SaltId",
-                table: "NutrientCalories",
-                column: "SaltId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NutrientCalories_VitaminsId",
-                table: "NutrientCalories",
-                column: "VitaminsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Nutrients_CategoryId",
@@ -731,9 +722,14 @@ namespace BeFit.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Protein_NutrientId",
+                name: "IX_Protein_NutrientPropertiesId",
                 table: "Protein",
-                column: "NutrientId");
+                column: "NutrientPropertiesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Salt_NutrientPropertiesId",
+                table: "Salt",
+                column: "NutrientPropertiesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserProperties_NeededCarbohydrateId",
@@ -755,6 +751,11 @@ namespace BeFit.Persistence.Migrations
                 table: "UserProperties",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vitamins_NutrientPropertiesId",
+                table: "Vitamins",
+                column: "NutrientPropertiesId");
         }
 
         /// <inheritdoc />
@@ -785,25 +786,22 @@ namespace BeFit.Persistence.Migrations
                 name: "Likes");
 
             migrationBuilder.DropTable(
-                name: "NutrientCalories");
-
-            migrationBuilder.DropTable(
-                name: "UserProperties");
-
-            migrationBuilder.DropTable(
-                name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Comments");
-
-            migrationBuilder.DropTable(
                 name: "Minerals");
 
             migrationBuilder.DropTable(
                 name: "Salt");
 
             migrationBuilder.DropTable(
+                name: "UserProperties");
+
+            migrationBuilder.DropTable(
                 name: "Vitamins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "Carbohydrate");
@@ -818,10 +816,13 @@ namespace BeFit.Persistence.Migrations
                 name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "Nutrients");
+                name: "NutrientProperties");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Nutrients");
 
             migrationBuilder.DropTable(
                 name: "Categories");

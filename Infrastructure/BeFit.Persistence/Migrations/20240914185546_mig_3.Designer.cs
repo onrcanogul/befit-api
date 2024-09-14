@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BeFit.Persistence.Migrations
 {
     [DbContext(typeof(BeFitDbContext))]
-    [Migration("20240901180117_initial_create")]
-    partial class initial_create
+    [Migration("20240914185546_mig_3")]
+    partial class mig_3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace BeFit.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -44,8 +47,11 @@ namespace BeFit.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("PropertyId")
+                    b.Property<Guid>("PropertiesId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -62,6 +68,9 @@ namespace BeFit.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -69,6 +78,9 @@ namespace BeFit.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -84,14 +96,7 @@ namespace BeFit.Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("ParentCommentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PostId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("PostId1")
+                    b.Property<Guid>("PostId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Text")
@@ -107,9 +112,7 @@ namespace BeFit.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentCommentId");
-
-                    b.HasIndex("PostId1");
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UserId");
 
@@ -122,18 +125,22 @@ namespace BeFit.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(21)
                         .HasColumnType("character varying(21)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Dislikes", (string)null);
 
@@ -220,6 +227,12 @@ namespace BeFit.Persistence.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("RefreshTokenExpiration")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -252,6 +265,9 @@ namespace BeFit.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(13)
@@ -264,6 +280,9 @@ namespace BeFit.Persistence.Migrations
                     b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -280,18 +299,22 @@ namespace BeFit.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(13)
                         .HasColumnType("character varying(13)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Likes", (string)null);
 
@@ -306,18 +329,24 @@ namespace BeFit.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("NutrientId")
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("NutrientPropertiesId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("SugarWeight")
                         .HasColumnType("numeric");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("Weight")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NutrientId");
+                    b.HasIndex("NutrientPropertiesId");
 
                     b.ToTable("Carbohydrate");
                 });
@@ -331,15 +360,21 @@ namespace BeFit.Persistence.Migrations
                     b.Property<decimal>("CholesterolWeight")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("NutrientId")
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("NutrientPropertiesId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("Weight")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NutrientId");
+                    b.HasIndex("NutrientPropertiesId");
 
                     b.ToTable("Fat");
                 });
@@ -350,15 +385,21 @@ namespace BeFit.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("NutrientId")
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("NutrientPropertiesId")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("Weight")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NutrientId");
+                    b.HasIndex("NutrientPropertiesId");
 
                     b.ToTable("Protein");
                 });
@@ -372,11 +413,17 @@ namespace BeFit.Persistence.Migrations
                     b.Property<decimal>("Calcium")
                         .HasColumnType("numeric");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<decimal>("Iron")
                         .HasColumnType("numeric");
 
                     b.Property<decimal>("Magnesium")
                         .HasColumnType("numeric");
+
+                    b.Property<Guid>("NutrientPropertiesId")
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Phosphorus")
                         .HasColumnType("numeric");
@@ -390,7 +437,12 @@ namespace BeFit.Persistence.Migrations
                     b.Property<decimal>("Sulfur")
                         .HasColumnType("numeric");
 
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("NutrientPropertiesId");
 
                     b.ToTable("Minerals");
                 });
@@ -401,48 +453,81 @@ namespace BeFit.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("B1")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("B12")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("B2")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("B3")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Calcium")
+                        .HasColumnType("numeric");
+
                     b.Property<decimal>("Calories")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("CarbohydrateId")
-                        .HasColumnType("uuid");
+                    b.Property<decimal>("Carbohydrate")
+                        .HasColumnType("numeric");
 
-                    b.Property<Guid>("FatId")
-                        .HasColumnType("uuid");
+                    b.Property<decimal>("CholesterolWeight")
+                        .HasColumnType("numeric");
 
-                    b.Property<Guid>("MineralsId")
-                        .HasColumnType("uuid");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("E")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Fat")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("FolicAcid")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Iron")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Magnesium")
+                        .HasColumnType("numeric");
 
                     b.Property<Guid>("NutrientId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ProteinId")
-                        .HasColumnType("uuid");
+                    b.Property<decimal>("Phosphorus")
+                        .HasColumnType("numeric");
 
-                    b.Property<Guid>("SaltId")
-                        .HasColumnType("uuid");
+                    b.Property<decimal>("Potassium")
+                        .HasColumnType("numeric");
 
-                    b.Property<Guid>("VitaminsId")
-                        .HasColumnType("uuid");
+                    b.Property<decimal>("Protein")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Salt")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Sodium")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("SugarWeight")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Sulfur")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarbohydrateId");
-
-                    b.HasIndex("FatId");
-
-                    b.HasIndex("MineralsId");
 
                     b.HasIndex("NutrientId")
                         .IsUnique();
 
-                    b.HasIndex("ProteinId");
-
-                    b.HasIndex("SaltId");
-
-                    b.HasIndex("VitaminsId");
-
-                    b.ToTable("NutrientCalories");
+                    b.ToTable("NutrientProperties");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.Post", b =>
@@ -451,6 +536,9 @@ namespace BeFit.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -458,6 +546,9 @@ namespace BeFit.Persistence.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -476,10 +567,21 @@ namespace BeFit.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("NutrientPropertiesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<decimal>("Weight")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NutrientPropertiesId");
 
                     b.ToTable("Salt");
                 });
@@ -489,6 +591,9 @@ namespace BeFit.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("DailyCalories")
                         .HasColumnType("numeric");
@@ -519,6 +624,9 @@ namespace BeFit.Persistence.Migrations
 
                     b.Property<decimal>("SuggestedWeight")
                         .HasColumnType("numeric");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -562,13 +670,24 @@ namespace BeFit.Persistence.Migrations
                     b.Property<decimal>("B3")
                         .HasColumnType("numeric");
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<decimal>("E")
                         .HasColumnType("numeric");
 
                     b.Property<decimal>("FolicAcid")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid>("NutrientPropertiesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("NutrientPropertiesId");
 
                     b.ToTable("Vitamins");
                 });
@@ -718,6 +837,8 @@ namespace BeFit.Persistence.Migrations
 
                     b.HasIndex("CommentId");
 
+                    b.HasIndex("UserId");
+
                     b.HasDiscriminator().HasValue("CommentDislike");
                 });
 
@@ -729,6 +850,8 @@ namespace BeFit.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.HasIndex("PostId");
+
+                    b.HasIndex("UserId");
 
                     b.HasDiscriminator().HasValue("PostDislike");
                 });
@@ -745,14 +868,14 @@ namespace BeFit.Persistence.Migrations
                     b.HasDiscriminator().HasValue("CategoryImage");
                 });
 
-            modelBuilder.Entity("BeFit.Domain.Entities.FoodImage", b =>
+            modelBuilder.Entity("BeFit.Domain.Entities.NutrientImage", b =>
                 {
                     b.HasBaseType("BeFit.Domain.Entities.Image");
 
-                    b.Property<Guid>("FoodId")
+                    b.Property<Guid>("NutrientId")
                         .HasColumnType("uuid");
 
-                    b.HasIndex("FoodId");
+                    b.HasIndex("NutrientId");
 
                     b.HasDiscriminator().HasValue("FoodImage");
                 });
@@ -778,6 +901,8 @@ namespace BeFit.Persistence.Migrations
 
                     b.HasIndex("CommentId");
 
+                    b.HasIndex("UserId");
+
                     b.HasDiscriminator().HasValue("CommentLike");
                 });
 
@@ -790,157 +915,105 @@ namespace BeFit.Persistence.Migrations
 
                     b.HasIndex("PostId");
 
+                    b.HasIndex("UserId");
+
                     b.HasDiscriminator().HasValue("PostLike");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.Comment", b =>
                 {
-                    b.HasOne("BeFit.Domain.Entities.Comment", "ParentComment")
-                        .WithMany("Replies")
-                        .HasForeignKey("ParentCommentId");
-
                     b.HasOne("BeFit.Domain.Entities.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId1")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BeFit.Domain.Entities.Identity.User", "User")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ParentComment");
 
                     b.Navigation("Post");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BeFit.Domain.Entities.Dislike", b =>
-                {
-                    b.HasOne("BeFit.Domain.Entities.Identity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BeFit.Domain.Entities.Like", b =>
-                {
-                    b.HasOne("BeFit.Domain.Entities.Identity.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("BeFit.Domain.Entities.Macros.Carbohydrate", b =>
                 {
-                    b.HasOne("BeFit.Domain.Entities.Abstract.Nutrient", "Nutrient")
+                    b.HasOne("BeFit.Domain.Entities.NutrientProperties", "NutrientProperties")
                         .WithMany()
-                        .HasForeignKey("NutrientId")
+                        .HasForeignKey("NutrientPropertiesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Nutrient");
+                    b.Navigation("NutrientProperties");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.Macros.Fat", b =>
                 {
-                    b.HasOne("BeFit.Domain.Entities.Abstract.Nutrient", "Nutrient")
+                    b.HasOne("BeFit.Domain.Entities.NutrientProperties", "NutrientProperties")
                         .WithMany()
-                        .HasForeignKey("NutrientId")
+                        .HasForeignKey("NutrientPropertiesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Nutrient");
+                    b.Navigation("NutrientProperties");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.Macros.Protein", b =>
                 {
-                    b.HasOne("BeFit.Domain.Entities.Abstract.Nutrient", "Nutrient")
+                    b.HasOne("BeFit.Domain.Entities.NutrientProperties", "NutrientProperties")
                         .WithMany()
-                        .HasForeignKey("NutrientId")
+                        .HasForeignKey("NutrientPropertiesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Nutrient");
+                    b.Navigation("NutrientProperties");
+                });
+
+            modelBuilder.Entity("BeFit.Domain.Entities.Minerals", b =>
+                {
+                    b.HasOne("BeFit.Domain.Entities.NutrientProperties", "NutrientProperties")
+                        .WithMany()
+                        .HasForeignKey("NutrientPropertiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NutrientProperties");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.NutrientProperties", b =>
                 {
-                    b.HasOne("BeFit.Domain.Entities.Macros.Carbohydrate", "Carbohydrate")
-                        .WithMany()
-                        .HasForeignKey("CarbohydrateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BeFit.Domain.Entities.Macros.Fat", "Fat")
-                        .WithMany()
-                        .HasForeignKey("FatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BeFit.Domain.Entities.Minerals", "Minerals")
-                        .WithMany()
-                        .HasForeignKey("MineralsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BeFit.Domain.Entities.Abstract.Nutrient", "Nutrient")
                         .WithOne("Properties")
                         .HasForeignKey("BeFit.Domain.Entities.NutrientProperties", "NutrientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BeFit.Domain.Entities.Macros.Protein", "Protein")
-                        .WithMany()
-                        .HasForeignKey("ProteinId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BeFit.Domain.Entities.Salt", "Salt")
-                        .WithMany()
-                        .HasForeignKey("SaltId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BeFit.Domain.Entities.Vitamins", "Vitamins")
-                        .WithMany()
-                        .HasForeignKey("VitaminsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Carbohydrate");
-
-                    b.Navigation("Fat");
-
-                    b.Navigation("Minerals");
-
                     b.Navigation("Nutrient");
-
-                    b.Navigation("Protein");
-
-                    b.Navigation("Salt");
-
-                    b.Navigation("Vitamins");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.Post", b =>
                 {
                     b.HasOne("BeFit.Domain.Entities.Identity.User", "User")
-                        .WithMany()
+                        .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BeFit.Domain.Entities.Salt", b =>
+                {
+                    b.HasOne("BeFit.Domain.Entities.NutrientProperties", "NutrientProperties")
+                        .WithMany()
+                        .HasForeignKey("NutrientPropertiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NutrientProperties");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.UserProperties", b =>
@@ -976,6 +1049,17 @@ namespace BeFit.Persistence.Migrations
                     b.Navigation("NeededProtein");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BeFit.Domain.Entities.Vitamins", b =>
+                {
+                    b.HasOne("BeFit.Domain.Entities.NutrientProperties", "NutrientProperties")
+                        .WithMany()
+                        .HasForeignKey("NutrientPropertiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NutrientProperties");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1051,7 +1135,15 @@ namespace BeFit.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BeFit.Domain.Entities.Identity.User", "User")
+                        .WithMany("CommentDislikes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Comment");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.PostDislike", b =>
@@ -1062,7 +1154,15 @@ namespace BeFit.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BeFit.Domain.Entities.Identity.User", "User")
+                        .WithMany("PostDislikes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Post");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.CategoryImage", b =>
@@ -1076,15 +1176,15 @@ namespace BeFit.Persistence.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("BeFit.Domain.Entities.FoodImage", b =>
+            modelBuilder.Entity("BeFit.Domain.Entities.NutrientImage", b =>
                 {
-                    b.HasOne("BeFit.Domain.Entities.Food", "Food")
-                        .WithMany()
-                        .HasForeignKey("FoodId")
+                    b.HasOne("BeFit.Domain.Entities.Abstract.Nutrient", "Nutrient")
+                        .WithMany("Images")
+                        .HasForeignKey("NutrientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Food");
+                    b.Navigation("Nutrient");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.PostImage", b =>
@@ -1106,7 +1206,15 @@ namespace BeFit.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BeFit.Domain.Entities.Identity.User", "User")
+                        .WithMany("CommentLikes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Comment");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.PostLike", b =>
@@ -1117,11 +1225,21 @@ namespace BeFit.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BeFit.Domain.Entities.Identity.User", "User")
+                        .WithMany("PostLikes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Post");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.Abstract.Nutrient", b =>
                 {
+                    b.Navigation("Images");
+
                     b.Navigation("Properties")
                         .IsRequired();
                 });
@@ -1140,18 +1258,30 @@ namespace BeFit.Persistence.Migrations
                     b.Navigation("Dislikes");
 
                     b.Navigation("Likes");
-
-                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.Identity.User", b =>
                 {
+                    b.Navigation("CommentDislikes");
+
+                    b.Navigation("CommentLikes");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("PostDislikes");
+
+                    b.Navigation("PostLikes");
+
+                    b.Navigation("Posts");
+
                     b.Navigation("Properties")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.Post", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Dislikes");
 
                     b.Navigation("Images");

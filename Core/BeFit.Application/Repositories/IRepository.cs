@@ -8,7 +8,7 @@ namespace BeFit.Application.Repositories
     public interface IRepository<T> where T : BaseEntity
     {
         public DbSet<T> _context { get; }
-        IQueryable<T> GetListQueryable(Expression<Func<T, bool>>? predicate = null);
+        IQueryable<T> GetQueryable(Expression<Func<T, bool>>? predicate = null);
         IQueryable<T> GetByIdQueryable(Guid? id);
         Task<T> CreateAsync(T entity);
         void Update(T entity);

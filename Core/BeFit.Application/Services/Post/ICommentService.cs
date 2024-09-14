@@ -1,7 +1,4 @@
-﻿using BeFit.Application.Common;
-using BeFit.Application.DataTransferObjects;
-
-namespace BeFit.Application.Services.Post
+﻿namespace BeFit.Application.Services.Post
 {
     public interface ICommentService
     {
