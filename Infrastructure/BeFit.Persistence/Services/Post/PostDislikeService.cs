@@ -14,7 +14,7 @@ namespace BeFit.Persistence.Services.Post
     {
         public async Task<ServiceResponse<NoContent>> Dislike(Guid postId, string userId)
         {
-            var dislike = await repository.GetListQueryable().Where(x => x.PostId == postId && x.UserId == userId).FirstOrDefaultAsync();
+            var dislike = await repository.GetQueryable().Where(x => x.PostId == postId && x.UserId == userId).FirstOrDefaultAsync();
 
             if (dislike != null)
                 repository.Delete(dislike);
@@ -36,7 +36,7 @@ namespace BeFit.Persistence.Services.Post
 
         public async Task<ServiceResponse<List<PostDislikeDto>>> GetByPost(Guid postId)
         {
-            var dislikes = await repository.GetListQueryable()
+            var dislikes = await repository.GetQueryable()
                 .Where(x => x.PostId == postId)
                 .Include(x => x.User)
                 .ToListAsync();

@@ -14,7 +14,7 @@ namespace BeFit.Persistence.Services.Post
     {
         public async Task<ServiceResponse<List<CommentDto>>> GetByPost(Guid postId)
         {
-            var comments = await repository.GetListQueryable()
+            var comments = await repository.GetQueryable()
                 .Where(x => x.PostId == postId)
                 .Include(x => x.User)
                 .Include(x => x.Likes)

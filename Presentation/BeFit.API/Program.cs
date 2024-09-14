@@ -10,7 +10,7 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddPersistenceServices(builder.Configuration)
     .AddApplicationServices()
-    .AddInfrastructureServices();
+    .AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 
@@ -24,6 +24,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseExceptionHandler(options => { });

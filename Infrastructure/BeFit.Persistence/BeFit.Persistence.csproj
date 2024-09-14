@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\BeFit.Application\BeFit.Application.csproj" />
+    <ProjectReference Include="..\BeFit.Infrastructure\BeFit.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

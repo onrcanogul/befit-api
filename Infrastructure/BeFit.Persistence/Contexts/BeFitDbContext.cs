@@ -72,7 +72,12 @@ namespace BeFit.Persistence.Contexts
                 .HasOne(u => u.User)
                 .WithOne(u => u.Properties)
                 .HasForeignKey<UserProperties>(up => up.UserId);
-
+            
+            
+            builder.Entity<NutrientProperties>()
+                .HasOne(n => n.Nutrient)
+                .WithOne(n => n.Properties)
+                .HasForeignKey<NutrientProperties>(n => n.NutrientId);
 
             base.OnModelCreating(builder);
         }

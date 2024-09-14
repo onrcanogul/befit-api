@@ -1,6 +1,4 @@
-﻿using BeFit.Application.Dtos;
-
-namespace BeFit.Application.DataTransferObjects
+﻿namespace BeFit.Application.DataTransferObjects
 {
     public class NutrientImageDto : ImageDto
     {

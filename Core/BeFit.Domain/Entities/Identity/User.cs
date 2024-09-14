@@ -8,7 +8,9 @@ namespace BeFit.Domain.Entities.Identity
         public string Surname { get; set; } = null!;
         public Gender Gender { get; set; }
         public int Age { get; set; }
-        public UserProperties Properties { get; set; } = null!;
+        public string? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiration { get; set; }
+        public UserProperties Properties { get; set; }
         public List<Post> Posts { get; set; } = new();
         public List<Comment> Comments { get; set; } = new();
         public List<CommentLike> CommentLikes { get; set; } = new();

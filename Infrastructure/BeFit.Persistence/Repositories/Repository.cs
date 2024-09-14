@@ -6,18 +6,36 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeFit.Persistence.Repositories
 {
-    public class Repository<T>(BeFitDbContext context) : IRepository<T> where T : BaseEntity
+    public class Repository<T> : IRepository<T> where T : BaseEntity
     {
+        private readonly BeFitDbContext context;
+
+        
+        public Repository(BeFitDbContext context)
+        {
+            this.context = context;
+        }
         public DbSet<T> _context => context.Set<T>();
+        
+        public IQueryable<T> GetQueryable(Expression<Func<T, bool>>? predicate = null)
+        {
+            var query = _context.AsQueryable();
+            return predicate == null ? query : query.Where(predicate);     
+        }
+        public IQueryable<T> GetByIdQueryable(Guid? id)
+        {
+            return _context.Where(e => e.Id == id);
+        }
         public async Task<T> CreateAsync(T entity)
         {
             await _context.AddAsync(entity);
             return entity;
         }
-        public async Task CreateRangeAsync(List<T> entities)
+        public void Update(T entity)
         {
-            await _context.AddRangeAsync(entities);
-        }
+            _context.Update(entity);
+        } 
+
         public void Delete(T entity)
         {
             _context.Remove(entity);
@@ -26,18 +44,10 @@ namespace BeFit.Persistence.Repositories
         {
             _context.RemoveRange(entities);
         }
-        public IQueryable<T> GetByIdQueryable(Guid id)
+        
+        public async Task CreateRangeAsync(List<T> entities)
         {
-            return _context.Where(e => e.Id == id);
-        }
-        public IQueryable<T> GetListQueryable(Expression<Func<T, bool>>? predicate = null)
-        {
-            var query = _context.AsQueryable();
-            return predicate == null ? query : query.Where(predicate);     
-        }
-        public void Update(T entity)
-        {
-            _context.Update(entity);
+            await _context.AddRangeAsync(entities);
         }
         public void UpdateRangeAsync(List<T> entities)
         {

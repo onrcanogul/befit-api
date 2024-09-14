@@ -15,7 +15,7 @@ namespace BeFit.Persistence.Services
     {
         public async Task<ServiceResponse<List<FoodDto>>> GetAll(int page, int size)
         {
-            List<Food> list = await Repository.GetListQueryable()
+            List<Food> list = await Repository.GetQueryable()
                 .Include(f => f.Properties)
                 .ToListAsync();
 

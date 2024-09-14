@@ -13,7 +13,7 @@ namespace BeFit.Persistence.Services.Post
     {
         public async Task<ServiceResponse<List<PostDto>>> Get(int page, int size)
         {
-            var posts = await repository.GetListQueryable()
+            var posts = await repository.GetQueryable()
                 .Skip(page * size)
                 .Take(size)
                     .Include(x => x.Likes)
@@ -45,7 +45,7 @@ namespace BeFit.Persistence.Services.Post
         }
         public async Task<ServiceResponse<List<PostDto>>> GetByUser(string id)
         {
-            var posts = await repository.GetListQueryable()
+            var posts = await repository.GetQueryable()
                 .Where(x => x.UserId == id)
                    .Include(x => x.Likes)
                        .ThenInclude(x => x.User)
@@ -63,8 +63,8 @@ namespace BeFit.Persistence.Services.Post
         { 
             ArgumentNullException.ThrowIfNull(nameof(model));
 
-            PostDto dto = new() { UserId = model.UserId, Title = model.Title, Description = model.Description, Images = model.Images }; //image seperate
-
+            PostDto dto = new() { UserId = model.UserId, Title = model.Title, Description = model.Description }; 
+            //image will seperate
             await repository.CreateAsync(mapper.Map<Domain.Entities.Post>(dto));
             await uow.SaveChangesAsync();
 

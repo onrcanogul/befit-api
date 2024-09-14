@@ -1,6 +1,4 @@
-﻿using BeFit.Application.Common;
-using BeFit.Application.DataTransferObjects;
-using BeFit.Application.DataTransferObjects.Post.CreateDtos;
+﻿using BeFit.Application.DataTransferObjects.Post.CreateDtos;
 
 namespace BeFit.Application.Services.Post
 {

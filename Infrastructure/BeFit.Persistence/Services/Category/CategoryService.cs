@@ -14,13 +14,12 @@ namespace BeFit.Persistence.Services
     {
         public async Task<ServiceResponse<List<CategoryDto>>> Get()
         {
-            var categories = await repository.GetListQueryable()
+            var categories = await repository.GetQueryable()
                 .Include(x => x.Drinks)
                     .ThenInclude(x => x.Properties)
                 .Include(x => x.Foods)
                     .ThenInclude(x => x.Properties)
-                 .Include(x => x.Images)
-                .ToListAsync();
+                 .Include(x => x.Images).ToListAsync();
 
             var list = mapper.Map<List<CategoryDto>>(categories);
 
@@ -34,8 +33,7 @@ namespace BeFit.Persistence.Services
                     .ThenInclude(x => x.Properties)
                 .Include(x => x.Foods)
                     .ThenInclude(x => x.Properties)
-                 .Include(x => x.Images)
-                .FirstOrDefaultAsync();
+                 .Include(x => x.Images).FirstOrDefaultAsync();
 
             var list = mapper.Map<CategoryDto>(category);
 
@@ -53,11 +51,8 @@ namespace BeFit.Persistence.Services
         public async Task<ServiceResponse<NoContent>> Update(CategoryDto model)
         {
             var existModel = await repository.GetByIdQueryable(model.Id).FirstOrDefaultAsync();
-            var mapping = mapper.Map(model, existModel);
-
-            if (mapping == null)
-                return ServiceResponse<NoContent>.Failure("Category Not Found", StatusCodes.Status404NotFound);
-
+            var mapping = mapper.Map(model, existModel) ?? throw new ArgumentNullException();;
+            
             repository.Update(mapping);
             await uow.SaveChangesAsync();
 
@@ -74,9 +69,6 @@ namespace BeFit.Persistence.Services
 
             return ServiceResponse<NoContent>.Success(StatusCodes.Status204NoContent);
         }
-
-
-
-
+     
     }
 }

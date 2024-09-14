@@ -13,7 +13,7 @@ namespace BeFit.Persistence.Services.Post
     {
         public async Task<ServiceResponse<List<PostLikeDto>>> GetByPost(Guid postId)
         {
-            var likes = await repository.GetListQueryable()
+            var likes = await repository.GetQueryable()
                 .Where(x => x.PostId == postId)
                 .Include(x => x.User)
                 .ToListAsync();
@@ -25,7 +25,7 @@ namespace BeFit.Persistence.Services.Post
 
         public async Task<ServiceResponse<NoContent>> Like(Guid postId, string userId)
         {
-            var like = await repository.GetListQueryable().Where(x => x.PostId == postId && x.UserId == userId).FirstOrDefaultAsync();
+            var like = await repository.GetQueryable().Where(x => x.PostId == postId && x.UserId == userId).FirstOrDefaultAsync();
 
             if (like != null)
                 repository.Delete(like);
