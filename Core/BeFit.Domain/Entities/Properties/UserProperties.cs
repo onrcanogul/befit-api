@@ -1,4 +1,5 @@
 ﻿using BeFit.Domain.Entities.Base;
+using BeFit.Domain.Entities.Enums;
 using BeFit.Domain.Entities.Exercise;
 using BeFit.Domain.Entities.Identity;
 using BeFit.Domain.Entities.Macros;
@@ -17,11 +18,12 @@ namespace BeFit.Domain.Entities
         public decimal WeightGainCalories { get; set; }
         public decimal MaintenanceCalories { get; set; }
         public Activity? Activity { get; set; }
+        public BodyDecision? BodyDecision { get; set; }
         public Protein NeededProtein { get; set; } = null!;
         public Carbohydrate NeededCarbohydrate { get; set; } = null!;
         public Fat NeededFat { get; set; } = null!;
         public string UserId { get; set; } = null!;
         public User User { get; set; } = null!;
-        public decimal BMR => (10 * Weight) + ((decimal)6.25 * Height) - (5 * User.Age) + 5;
+        public decimal BMR => User.Gender == Gender.Male ? (10 * Weight) + ((decimal)6.25 * Height) - (5 * User.Age) + 5 : (10 * Weight) + ((decimal)6.25 * Height) - (5 * User.Age) - 161;
     }
 }
