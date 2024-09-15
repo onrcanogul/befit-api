@@ -146,6 +146,30 @@ namespace BeFit.Persistence.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("BeFit.Domain.Entities.Exercise.Activity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("ActivityCoefficient")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Activity");
+                });
+
             modelBuilder.Entity("BeFit.Domain.Entities.Identity.Role", b =>
                 {
                     b.Property<string>("Id")
@@ -589,6 +613,12 @@ namespace BeFit.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ActivityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("BodyDecision")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -636,6 +666,8 @@ namespace BeFit.Persistence.Migrations
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
 
                     b.HasIndex("NeededCarbohydrateId");
 
@@ -1015,6 +1047,10 @@ namespace BeFit.Persistence.Migrations
 
             modelBuilder.Entity("BeFit.Domain.Entities.UserProperties", b =>
                 {
+                    b.HasOne("BeFit.Domain.Entities.Exercise.Activity", "Activity")
+                        .WithMany()
+                        .HasForeignKey("ActivityId");
+
                     b.HasOne("BeFit.Domain.Entities.Macros.Carbohydrate", "NeededCarbohydrate")
                         .WithMany()
                         .HasForeignKey("NeededCarbohydrateId")
@@ -1038,6 +1074,8 @@ namespace BeFit.Persistence.Migrations
                         .HasForeignKey("BeFit.Domain.Entities.UserProperties", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Activity");
 
                     b.Navigation("NeededCarbohydrate");
 
