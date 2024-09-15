@@ -37,6 +37,7 @@ namespace BeFit.Persistence
             services.AddScoped<IPostLikeService, PostLikeService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ITokenHandler, TokenHandler>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;

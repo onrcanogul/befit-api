@@ -8,13 +8,13 @@ namespace BeFit.Application.DataTransferObjects
     {
         public decimal Weight { get; set; }
         public decimal Height { get; set; }
-        public decimal FatRate { get; set; }
-        public decimal SuggestedFatRate { get; set; }
-        public decimal SuggestedWeight { get; set; }
-        public decimal DailyCalories { get; set; }
-        public decimal FatBurnCalories { get; set; }
-        public decimal WeightGainCalories { get; set; }
-        public decimal MaintenanceCalories { get; set; }
+        public decimal? FatRate { get; set; }
+        public decimal? SuggestedFatRate { get; set; }
+        public decimal? SuggestedWeight { get; set; }
+        public decimal? DailyCalories { get; set; }
+        public decimal? FatBurnCalories { get; set; }
+        public decimal? WeightGainCalories { get; set; }
+        public decimal? MaintenanceCalories { get; set; }
         public Activity? Activity { get; set; }
         public BodyDecision? BodyDecision { get; set; }
         public ProteinDto NeededProtein { get; set; }  

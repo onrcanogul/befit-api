@@ -12,18 +12,11 @@ namespace BeFit.Persistence.Services.Identity
 {
     public class UserPropertyService(IRepository<UserProperties> repository, IMapper mapper, IUnitOfWork uow) : IUserPropertyService
     {
-        public async Task<ServiceResponse<NoContent>> CreateUserProperties(UserPropertiesDto model)
+        public async Task<ServiceResponse<NoContent>> Create(UserPropertiesDto model)
         {
             ArgumentNullException.ThrowIfNull(nameof(model));
 
-            model.MaintenanceCalories = CalculateMaintenanceCalories(model);
-            model.FatBurnCalories = CalculateFatBurnCalories(model);
-            model.WeightGainCalories = CalculateWeightGainCalories(model);
-            model.SuggestedWeight = CalculateSuggestedWeight(model);
-            model.SuggestedFatRate = CalculateSuggestedFatRate(model);
-            model.NeededProtein.Weight = CalculateNeededProtein(model);
-            model.NeededCarbohydrate.Weight = CalculateNeededCarb(model);
-            model.NeededFat.Weight = CalculateNeededFat(model);
+            FillProperties(model);
 
             var entity = mapper.Map<UserProperties>(model);
 
@@ -32,8 +25,33 @@ namespace BeFit.Persistence.Services.Identity
 
             return ServiceResponse<NoContent>.Success(StatusCodes.Status201Created);
         }
-
-
+        public async Task<ServiceResponse<NoContent>> Update(UserPropertiesDto model)
+        {
+            var userProperty = mapper.Map<UserProperties>(model);
+            
+            userProperty.Height = model.Height;
+            userProperty.Weight = model.Weight;
+            userProperty.Activity = model.Activity;
+            userProperty.BodyDecision = model.BodyDecision;
+            
+            FillProperties(model);
+            
+            repository.Update(userProperty);
+            await uow.SaveChangesAsync();
+            
+            return ServiceResponse<NoContent>.Success(StatusCodes.Status204NoContent);
+        }
+        private static void FillProperties(UserPropertiesDto model)
+        {
+            model.MaintenanceCalories = CalculateMaintenanceCalories(model);
+            model.FatBurnCalories = CalculateFatBurnCalories(model);
+            model.WeightGainCalories = CalculateWeightGainCalories(model);
+            model.SuggestedWeight = CalculateSuggestedWeight(model);
+            model.SuggestedFatRate = CalculateSuggestedFatRate(model);
+            model.NeededProtein.Weight = CalculateNeededProtein(model); //make primitive
+            model.NeededCarbohydrate.Weight = CalculateNeededCarb(model); //make primitive
+            model.NeededFat.Weight = CalculateNeededFat(model); //make primitive
+        }
         private static decimal CalculateMaintenanceCalories(UserPropertiesDto model)
         {
             return model.Activity!.ActivityCoefficient * model.BMR;
@@ -64,9 +82,9 @@ namespace BeFit.Persistence.Services.Identity
 
             return fatRate;
         }
-        private static decimal CalculateNeededProtein(UserPropertiesDto model)
+        private static decimal? CalculateNeededProtein(UserPropertiesDto model)
         {
-            decimal protein;
+            decimal? protein;
             var bodyWeightWithoutFat = model.Weight - ((model.Weight * model.FatRate) / 100);
             protein = model.BodyDecision switch
             {
@@ -76,9 +94,9 @@ namespace BeFit.Persistence.Services.Identity
             };
             return protein;
         }
-        private static decimal CalculateNeededFat(UserPropertiesDto model)
+        private static decimal? CalculateNeededFat(UserPropertiesDto model)
         {
-            decimal fat;
+            decimal? fat;
             var bodyWeightWithoutFat = model.Weight - ((model.Weight * model.FatRate) / 100);
             fat = model.BodyDecision switch
             {
@@ -88,7 +106,7 @@ namespace BeFit.Persistence.Services.Identity
             };
             return fat;
         }
-        private static decimal CalculateNeededCarb(UserPropertiesDto model)
+        private static decimal? CalculateNeededCarb(UserPropertiesDto model)
         {
             var fat = CalculateNeededFat(model);
             var protein = CalculateNeededProtein(model);
