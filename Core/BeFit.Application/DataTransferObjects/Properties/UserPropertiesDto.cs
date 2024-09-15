@@ -1,4 +1,6 @@
-﻿using BeFit.Domain.Entities.Exercise;
+﻿using BeFit.Domain.Entities;
+using BeFit.Domain.Entities.Enums;
+using BeFit.Domain.Entities.Exercise;
 
 namespace BeFit.Application.DataTransferObjects
 {
@@ -14,12 +16,13 @@ namespace BeFit.Application.DataTransferObjects
         public decimal WeightGainCalories { get; set; }
         public decimal MaintenanceCalories { get; set; }
         public Activity? Activity { get; set; }
+        public BodyDecision? BodyDecision { get; set; }
         public ProteinDto NeededProtein { get; set; }  
         public CarbohydrateDto NeededCarbohydrate { get; set; }
         public FatDto NeededFat { get; set; }
         public string UserId { get; set; } = null!;
         public UserDto User { get; set; } = null!;
-        public decimal BMR => (10 * Weight) + ((decimal)6.25 * Height) - (5 * User.Age) + 5;
+        public decimal BMR => User.Gender == Gender.Male ? (10 * Weight) + ((decimal)6.25 * Height) - (5 * User.Age) + 5 : (10 * Weight) + ((decimal)6.25 * Height) - (5 * User.Age) - 161;
 
     }
 }
