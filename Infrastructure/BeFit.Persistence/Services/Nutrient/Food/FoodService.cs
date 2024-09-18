@@ -7,7 +7,6 @@ using BeFit.Application.Services;
 using BeFit.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace BeFit.Persistence.Services
 {
@@ -57,8 +56,6 @@ namespace BeFit.Persistence.Services
 
             return ServiceResponse<NoContent>.Success(StatusCodes.Status204NoContent);
         }
-
-
         public async Task<ServiceResponse<NoContent>> Update(UpdateNutrientDto model)
         {
             ArgumentNullException.ThrowIfNull(model);
