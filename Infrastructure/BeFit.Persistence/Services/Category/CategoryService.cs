@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using BeFit.Application.Common;
 using BeFit.Application.DataTransferObjects;
+using BeFit.Application.DataTransferObjects.Create;
+using BeFit.Application.DataTransferObjects.Update;
 using BeFit.Application.Repositories;
 using BeFit.Application.Services.Category;
 using BeFit.Domain.Entities;
+using BeFit.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,26 +42,22 @@ namespace BeFit.Persistence.Services
 
             return ServiceResponse<CategoryDto>.Success(list, StatusCodes.Status200OK);
         }
-        public async Task<ServiceResponse<NoContent>> Create(CategoryDto model)
+        public async Task<ServiceResponse<NoContent>> Create(CreateCategoryDto model)
         {
             var mapping = mapper.Map<Category>(model);
-
             await repository.CreateAsync(mapping);
             await uow.SaveChangesAsync();
-
             return ServiceResponse<NoContent>.Success(StatusCodes.Status201Created);
         }
-        public async Task<ServiceResponse<NoContent>> Update(CategoryDto model)
+        public async Task<ServiceResponse<NoContent>> Update(UpdateCategoryDto model)
         {
-            var existModel = await repository.GetByIdQueryable(model.Id).FirstOrDefaultAsync();
-            var mapping = mapper.Map(model, existModel) ?? throw new ArgumentNullException();;
-            
-            repository.Update(mapping);
+            var existModel = await repository.GetByIdQueryable(model.Id).FirstOrDefaultAsync() ?? throw new NotFoundException("category not found");
+            existModel.Name = model.Name;
+            existModel.Description = model.Description;
+            repository.Update(existModel);
             await uow.SaveChangesAsync();
-
-            return ServiceResponse<NoContent>.Success(StatusCodes.Status204NoContent);
+            return ServiceResponse<NoContent>.Success(StatusCodes.Status200OK);
         }
-
         public async Task<ServiceResponse<NoContent>> Delete(Guid id)
         {
             var existModel = await repository.GetByIdQueryable(id).FirstOrDefaultAsync() ?? throw new ArgumentNullException();
@@ -67,7 +66,7 @@ namespace BeFit.Persistence.Services
 
             await uow.SaveChangesAsync();
 
-            return ServiceResponse<NoContent>.Success(StatusCodes.Status204NoContent);
+            return ServiceResponse<NoContent>.Success(StatusCodes.Status200OK);
         }
      
     }

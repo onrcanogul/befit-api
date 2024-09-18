@@ -1,4 +1,5 @@
-﻿using BeFit.Domain.Entities;
+﻿using System.Text.Json.Serialization;
+using BeFit.Domain.Entities;
 using BeFit.Domain.Entities.Enums;
 using BeFit.Domain.Entities.Exercise;
 
@@ -21,6 +22,7 @@ namespace BeFit.Application.DataTransferObjects
         public CarbohydrateDto NeededCarbohydrate { get; set; }
         public FatDto NeededFat { get; set; }
         public string UserId { get; set; } = null!;
+        [JsonIgnore]
         public UserDto User { get; set; } = null!;
         public decimal BMR => User.Gender == Gender.Male ? (10 * Weight) + ((decimal)6.25 * Height) - (5 * User.Age) + 5 : (10 * Weight) + ((decimal)6.25 * Height) - (5 * User.Age) - 161;
 

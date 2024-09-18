@@ -1,7 +1,6 @@
 using BeFit.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -11,24 +10,19 @@ builder.Services
     .AddPersistenceServices(builder.Configuration)
     .AddApplicationServices()
     .AddInfrastructureServices(builder.Configuration);
-
+builder.Services.AddControllers().AddNewtonsoftJson(x => 
+    x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 
 var app = builder.Build();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseExceptionHandler(options => { });
-
 app.MapControllers();
-
 app.Run();

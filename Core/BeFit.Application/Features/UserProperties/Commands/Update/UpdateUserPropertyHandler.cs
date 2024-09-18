@@ -1,8 +1,9 @@
-﻿using BeFit.Application.Services.Identity;
+﻿using BeFit.Application.DataTransferObjects.Update;
+using BeFit.Application.Services.Identity;
 
 namespace BeFit.Application.Features.UserProperties.Commands.Update
 {
-    public record UpdateUserPropertyRequest(UserPropertiesDto Model) : IRequest<UpdateUserPropertyResponse>;
+    public record UpdateUserPropertyRequest(UpdateUserPropertiesDto Model) : IRequest<UpdateUserPropertyResponse>;
     public record UpdateUserPropertyResponse(ServiceResponse<NoContent> Response);
     public class UpdateUserPropertyHandler(IUserPropertyService service) : IRequestHandler<UpdateUserPropertyRequest, UpdateUserPropertyResponse>
     {

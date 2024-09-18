@@ -13,7 +13,7 @@ namespace BeFit.API.Controllers
     public class CommentController(IMediator mediator) : CustomBaseController
     {
         [HttpGet]
-        public async Task<IActionResult> GetByPost(GetCommentByPostRequest request)
+        public async Task<IActionResult> GetByPost([FromQuery]GetCommentByPostRequest request)
             => ControllerResponse((await mediator.Send(request)).Response);
 
         [HttpPost]

@@ -4,9 +4,9 @@ using BeFit.Application.DataTransferObjects;
 using BeFit.Application.Repositories;
 using BeFit.Application.Services.Post;
 using BeFit.Domain.Entities;
+using BeFit.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace BeFit.Persistence.Services.Post
 {
@@ -28,12 +28,9 @@ namespace BeFit.Persistence.Services.Post
             return ServiceResponse<List<CommentDto>>.Success(dto, StatusCodes.Status200OK);
 
         }
-        public async Task<ServiceResponse<NoContent>> Create(string text, string userId)
+        public async Task<ServiceResponse<NoContent>> Create(string text, string userId, Guid postId)
         {
-            if (text == null || userId == null)
-                return ServiceResponse<NoContent>.Failure("bad request", StatusCodes.Status400BadRequest);
-
-            Comment comment = new() { Text = text, UserId = userId };
+            Comment comment = new() { Text = text, PostId = postId , UserId = userId};
 
             await repository.CreateAsync(comment);
             await uow.SaveChangesAsync();
@@ -52,19 +49,19 @@ namespace BeFit.Persistence.Services.Post
             repository.Update(currentComment);
             await uow.SaveChangesAsync();
 
-            return ServiceResponse<NoContent>.Success(StatusCodes.Status204NoContent);
+            return ServiceResponse<NoContent>.Success(StatusCodes.Status200OK);
         }
         public async Task<ServiceResponse<NoContent>> Delete(Guid id)
         {
             if(id == Guid.Empty)
                 return ServiceResponse<NoContent>.Failure("bad request", StatusCodes.Status400BadRequest);
 
-            var currentComment = await repository.GetByIdQueryable(id).FirstOrDefaultAsync() ?? throw new ArgumentNullException();
+            var currentComment = await repository.GetByIdQueryable(id).FirstOrDefaultAsync() ?? throw new NotFoundException("comment not found");
 
             repository.Delete(currentComment);
             await uow.SaveChangesAsync();
 
-            return ServiceResponse<NoContent>.Success(StatusCodes.Status204NoContent);
+            return ServiceResponse<NoContent>.Success(StatusCodes.Status200OK);
         }
     }
 }

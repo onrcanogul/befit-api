@@ -1,8 +1,9 @@
-﻿using BeFit.Application.Services.Identity;
+﻿using BeFit.Application.DataTransferObjects.Create;
+using BeFit.Application.Services.Identity;
 
 namespace BeFit.Application.Features.UserProperties.Commands.Create
 {
-    public record CreateUserPropertiesRequest(UserPropertiesDto Model) : IRequest<CreateUserPropertiesResponse>;
+    public record CreateUserPropertiesRequest(CreateUserPropertiesDto Model) : IRequest<CreateUserPropertiesResponse>;
 
     public record CreateUserPropertiesResponse(ServiceResponse<NoContent> Response);
     public class CreateUserPropertiesHandler(IUserPropertyService service) : IRequestHandler<CreateUserPropertiesRequest, CreateUserPropertiesResponse>
