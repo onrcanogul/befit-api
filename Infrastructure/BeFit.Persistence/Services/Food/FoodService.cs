@@ -4,13 +4,14 @@ using BeFit.Application.DataTransferObjects;
 using BeFit.Application.DataTransferObjects.Nutrients.CreateDtos;
 using BeFit.Application.Repositories;
 using BeFit.Application.Services;
+using BeFit.Application.Services.NutrientProperty;
 using BeFit.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace BeFit.Persistence.Services
 {
-    public class FoodService(IRepository<Food> Repository, IMapper mapper, IUnitOfWork uow) : IFoodService
+    public class FoodService(IRepository<Food> Repository, IMapper mapper, IUnitOfWork uow, INutrientPropertyService propertyService) : IFoodService
     {
         public async Task<ServiceResponse<List<FoodDto>>> GetAll(int page, int size)
         {
@@ -18,7 +19,7 @@ namespace BeFit.Persistence.Services
                 .Include(f => f.Properties)
                 .ToListAsync();
 
-            List<FoodDto> foods = mapper.Map<List<FoodDto>>(list);
+            var foods = mapper.Map<List<FoodDto>>(list);
             return ServiceResponse<List<FoodDto>>.Success(foods, StatusCodes.Status200OK);
         }
         public async Task<ServiceResponse<FoodDto>> GetById(Guid id)
@@ -34,16 +35,14 @@ namespace BeFit.Persistence.Services
         public async Task<ServiceResponse<FoodDto>> Create(CreateNutrientDto model)
         {
             ArgumentNullException.ThrowIfNull(model);
-
-            var mappingResult = mapper.Map<Food>(model);
-
-            await Repository.CreateAsync(mappingResult);
-
+            var food = new Domain.Entities.Food() { Id=Guid.NewGuid(), Name = model.Name, Description = model.Description };
+            
+            await Repository.CreateAsync(food);
             await uow.SaveChangesAsync();
-
-            var dto = mapper.Map<FoodDto>(mappingResult);
-
-            return ServiceResponse<FoodDto>.Success(dto, StatusCodes.Status201Created);
+            
+            await propertyService.Create(model.Properties, food.Id);
+            
+            return ServiceResponse<FoodDto>.Success(null, StatusCodes.Status201Created);
         }
 
         public async Task<ServiceResponse<NoContent>> Delete(Guid id)

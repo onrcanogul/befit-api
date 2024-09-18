@@ -1,6 +1,8 @@
-﻿namespace BeFit.Application.Features.Category.Commands.Update
+﻿using BeFit.Application.DataTransferObjects.Update;
+
+namespace BeFit.Application.Features.Category.Commands.Update
 {
-    public record UpdateCategoryRequest(CategoryDto Model) : IRequest<UpdateCategoryResponse>;
+    public record UpdateCategoryRequest(UpdateCategoryDto Model) : IRequest<UpdateCategoryResponse>;
 
     public record UpdateCategoryResponse(ServiceResponse<NoContent> Response);
 

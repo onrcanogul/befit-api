@@ -4,6 +4,7 @@ using BeFit.Application.Features.Post.Commands.Delete;
 using BeFit.Application.Features.Post.Commands.Update;
 using BeFit.Application.Features.Post.Queries.Get;
 using BeFit.Application.Features.Post.Queries.GetById;
+using BeFit.Application.Features.Post.Queries.GetByUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,10 @@ namespace BeFit.API.Controllers
         [HttpGet("id")]
         public async Task<IActionResult> GetById([FromQuery]GetPostByIdRequest request)
             => ControllerResponse((await mediator.Send(request)).Response);
-
+        [HttpGet("userId")]
+        public async Task<IActionResult> GetByUserId([FromQuery]GetPostByUserRequest request) 
+            => ControllerResponse((await mediator.Send(request)).Response);
+        
         [HttpPost]
         public async Task<IActionResult> Create([FromForm]CreatePostRequest request)
             => ControllerResponse((await mediator.Send(request)).Response);

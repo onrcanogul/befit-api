@@ -29,19 +29,16 @@ namespace BeFit.Persistence.Services.Post
 
             if (like != null)
                 repository.Delete(like);
-            else
+            else 
             {
                 PostLike createdLike = new()
                 {
                     UserId = userId,
                     PostId = postId
                 };
-
                 await repository.CreateAsync(createdLike);
             }
-
             await uow.SaveChangesAsync();
-
             return ServiceResponse<NoContent>.Success(StatusCodes.Status201Created);
         }
     }

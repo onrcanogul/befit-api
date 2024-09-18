@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 
 namespace BeFit.Application.DataTransferObjects.Post.CreateDtos
 {
@@ -8,6 +7,6 @@ namespace BeFit.Application.DataTransferObjects.Post.CreateDtos
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string UserId { get; set; } = null!;
-        public IFormFileCollection Images { get; set; }
+        public IFormFileCollection? Images { get; set; }
     }
 }

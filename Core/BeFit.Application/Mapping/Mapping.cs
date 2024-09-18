@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using BeFit.Application.DataTransferObjects;
-using BeFit.Application.DataTransferObjects.Nutrients.CreateDtos;
+using BeFit.Application.DataTransferObjects.Create;
+using BeFit.Application.DataTransferObjects.Update;
 using BeFit.Domain.Entities;
 using BeFit.Domain.Entities.Abstract;
 using BeFit.Domain.Entities.Identity;
@@ -12,7 +12,13 @@ namespace BeFit.Application.Mapper
     {
         public Mapping()
         {
-            CreateMap<FoodDto, Food>().ReverseMap();
+            CreateMap<Nutrient, NutrientDto>();
+
+            CreateMap<Food, FoodDto>()
+                .IncludeBase<Nutrient, NutrientDto>();
+            CreateMap<Drink, DrinkDto>()
+                .IncludeBase<Nutrient, NutrientDto>();
+            CreateMap<NutrientDto, Nutrient>().ReverseMap();
             CreateMap<CategoryDto, Category>().ReverseMap();
             CreateMap<UserDto, User>().ReverseMap();
             CreateMap<CategoryImage, CategoryImageDto>().ReverseMap();
@@ -25,7 +31,6 @@ namespace BeFit.Application.Mapper
             CreateMap<MineralsDto, Minerals>().ReverseMap();
             CreateMap<Vitamins, VitaminsDto>().ReverseMap();
             CreateMap<Drink, DrinkDto>().ReverseMap();
-            CreateMap<Food, FoodDto>().ReverseMap();
             CreateMap<CommentDislike, CommentDislikeDto>().ReverseMap();
             CreateMap<CommentLike, CommentLikeDto>().ReverseMap();
             CreateMap<LikeDto, Like>().ReverseMap();
@@ -34,14 +39,15 @@ namespace BeFit.Application.Mapper
             CreateMap<PostDislike, PostDislikeDto>().ReverseMap();
             CreateMap<PostDto, Post>().ReverseMap();
             CreateMap<CommentDto, Comment>().ReverseMap();
-            CreateMap<NutrientPropertiesDto, NutrientProperties>().ReverseMap();
+            CreateMap<NutrientProperties, NutrientPropertiesDto>().ReverseMap();
             CreateMap<UserProperties, UserPropertiesDto>().ReverseMap();
             CreateMap<CreateNutrientDto, FoodDto>().ReverseMap();
             CreateMap<CreateNutrientDto, DrinkDto>().ReverseMap();
             CreateMap<CreateNutrientDto, NutrientDto>().ReverseMap();
-            CreateMap<UpdateNutrientDto, NutrientDto>().ReverseMap();
-            CreateMap<UpdateNutrientDto, NutrientDto>().ReverseMap();
-            CreateMap<UpdateNutrientDto, NutrientDto>().ReverseMap();
+            CreateMap<CreateUserPropertiesDto, UserProperties>().ReverseMap();
+            CreateMap<UpdateUserPropertiesDto, UserProperties>().ReverseMap();
+            CreateMap<CreateCategoryDto, Category>().ReverseMap();
+            CreateMap<UpdateCategoryDto, Category>().ReverseMap();
         }
     }
 }
