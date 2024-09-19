@@ -15,23 +15,17 @@ namespace BeFit.Persistence.Services.Identity
         public async Task<ServiceResponse<Token>> Login(LoginDto model)
         {
             var user = await CheckUser(model.EmailOrUsername);
-
             if (user == null) return ServiceResponse<Token>.Failure("No record", StatusCodes.Status400BadRequest);
-
             var isLoggedIn = await userManager.CheckPasswordAsync(user, model.Password);
-
             if (isLoggedIn == false) return ServiceResponse<Token>.Failure("A problem while login", StatusCodes.Status500InternalServerError);
-
             var token = tokenHandler.CreateToken(user);
             await UpdateRefreshTokenAsync(token.RefreshToken, user, token.Expiration, 10);
-
             return ServiceResponse<Token>.Success(token,StatusCodes.Status200OK);
         }
         public async Task<ServiceResponse<NoContent>> Register(RegisterDto model)
         {
             if (model.Password != model.ConfirmPassword)
                 return ServiceResponse<NoContent>.Failure("Passwords did not match", StatusCodes.Status400BadRequest);
-
             User user = new()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -42,32 +36,23 @@ namespace BeFit.Persistence.Services.Identity
                 Name = model.Name,
                 Surname = model.Surname
             };
-
             var result = await userManager.CreateAsync(user, model.Password);
-
             return !result.Succeeded ? ServiceResponse<NoContent>.Failure(result.Errors.Select(x => x.Description).ToList(), StatusCodes.Status500InternalServerError) :
-                //token will added
                 ServiceResponse<NoContent>.Success(StatusCodes.Status201Created);
         }
         public async Task<ServiceResponse<Token>> LoginWithRefreshToken(string refreshToken)
         {
             var user = await userManager.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshToken);
-
             if (user == null) throw new NotFoundException("user not found");
-
             var token = tokenHandler.CreateToken(user);
-
             await UpdateRefreshTokenAsync(refreshToken, user, token.Expiration, 10);
-
             return ServiceResponse<Token>.Success(token, StatusCodes.Status200OK);
         }
         public async Task UpdateRefreshTokenAsync(string refreshToken, User user, DateTime accessTokenDate, int addToAccessToken)
         {
             if(user == null) throw new NotFoundException("user not found");
-
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpiration = accessTokenDate.AddMinutes(addToAccessToken);
-            
             await userManager.UpdateAsync(user);
         }
         private async Task<User?> CheckUser(string emailOrUsername)

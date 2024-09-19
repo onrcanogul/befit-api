@@ -13,13 +13,10 @@ namespace BeFit.Persistence.Services.Post
     {
         public async Task<ServiceResponse<List<PostLikeDto>>> GetByPost(Guid postId)
         {
-            var likes = await repository.GetQueryable()
-                .Where(x => x.PostId == postId)
+            var likes = await repository.GetQueryable().Where(x => x.PostId == postId)
                 .Include(x => x.User)
                 .ToListAsync();
-
             var dto = mapper.Map<List<PostLikeDto>>(likes);
-
             return ServiceResponse<List<PostLikeDto>>.Success(dto, StatusCodes.Status200OK);
         }
 
@@ -27,17 +24,10 @@ namespace BeFit.Persistence.Services.Post
         {
             var like = await repository.GetQueryable().Where(x => x.PostId == postId && x.UserId == userId).FirstOrDefaultAsync();
 
-            if (like != null)
+            if (like == null)
+                await repository.CreateAsync(new() { UserId = userId, PostId = postId });
+            else
                 repository.Delete(like);
-            else 
-            {
-                PostLike createdLike = new()
-                {
-                    UserId = userId,
-                    PostId = postId
-                };
-                await repository.CreateAsync(createdLike);
-            }
             await uow.SaveChangesAsync();
             return ServiceResponse<NoContent>.Success(StatusCodes.Status201Created);
         }

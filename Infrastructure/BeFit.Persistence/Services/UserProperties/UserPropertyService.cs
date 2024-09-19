@@ -15,28 +15,22 @@ namespace BeFit.Persistence.Services.Identity
         public async Task<ServiceResponse<NoContent>> Create(CreateUserPropertiesDto model)
         {
             ArgumentNullException.ThrowIfNull(nameof(model));
-
             var entity = mapper.Map<UserProperties>(model);
             FillProperties(entity);
             await repository.CreateAsync(entity);
             await uow.SaveChangesAsync();
-
             return ServiceResponse<NoContent>.Success(StatusCodes.Status201Created);
         }
         public async Task<ServiceResponse<NoContent>> Update(UpdateUserPropertiesDto model)
         {
             var userProperty = mapper.Map<UserProperties>(model);
-            
             userProperty.Height = model.Height;
             userProperty.Weight = model.Weight;
             userProperty.Activity = model.Activity;
             userProperty.BodyDecision = model.BodyDecision;
-            
             FillProperties(userProperty);
-            
             repository.Update(userProperty);
             await uow.SaveChangesAsync();
-            
             return ServiceResponse<NoContent>.Success(StatusCodes.Status204NoContent);
         }
         private static void FillProperties(UserProperties model)
@@ -70,14 +64,12 @@ namespace BeFit.Persistence.Services.Identity
         private static decimal CalculateSuggestedFatRate(UserProperties model)
         {
             var fatRate = ((decimal)1.20 * model.Weight / (model.Height * model.Height)) + ((decimal)0.23 * (decimal)model.User.Age);
-
             fatRate -= model.User.Gender switch
             {
                 Gender.Male => (decimal)5.4,
                 Gender.Female => (decimal)16.2,
                 _ => throw new ArgumentOutOfRangeException()
             };
-
             return fatRate;
         }
         private static decimal CalculateNeededProtein(UserProperties model)
@@ -108,12 +100,9 @@ namespace BeFit.Persistence.Services.Identity
         {
             var fat = CalculateNeededFat(model);
             var protein = CalculateNeededProtein(model);
-
             var fatCalorie = fat * 9;
             var proteinCalorie = fat * 4;
-
             var carb = (model.DailyCalories - (fatCalorie + proteinCalorie)) / 4;
-
             return carb;
         }
     }

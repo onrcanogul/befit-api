@@ -16,7 +16,6 @@ namespace BeFit.Persistence.Repositories
             this.context = context;
         }
         public DbSet<T> _context => context.Set<T>();
-        
         public IQueryable<T> GetQueryable(Expression<Func<T, bool>>? predicate = null)
         {
             var query = _context.AsQueryable();
@@ -35,7 +34,6 @@ namespace BeFit.Persistence.Repositories
         {
             _context.Update(entity);
         } 
-
         public void Delete(T entity)
         {
             _context.Remove(entity);
@@ -44,7 +42,6 @@ namespace BeFit.Persistence.Repositories
         {
             _context.RemoveRange(entities);
         }
-        
         public async Task CreateRangeAsync(List<T> entities)
         {
             await _context.AddRangeAsync(entities);
