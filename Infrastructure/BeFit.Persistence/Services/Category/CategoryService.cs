@@ -23,12 +23,9 @@ namespace BeFit.Persistence.Services
                 .Include(x => x.Foods)
                     .ThenInclude(x => x.Properties)
                  .Include(x => x.Images).ToListAsync();
-
             var list = mapper.Map<List<CategoryDto>>(categories);
-
             return ServiceResponse<List<CategoryDto>>.Success(list, StatusCodes.Status200OK);
         }
-
         public async Task<ServiceResponse<CategoryDto>> GetById(Guid id)
         {
             var category = await repository.GetByIdQueryable(id)
@@ -37,9 +34,7 @@ namespace BeFit.Persistence.Services
                 .Include(x => x.Foods)
                     .ThenInclude(x => x.Properties)
                  .Include(x => x.Images).FirstOrDefaultAsync();
-
             var list = mapper.Map<CategoryDto>(category);
-
             return ServiceResponse<CategoryDto>.Success(list, StatusCodes.Status200OK);
         }
         public async Task<ServiceResponse<NoContent>> Create(CreateCategoryDto model)
@@ -61,11 +56,8 @@ namespace BeFit.Persistence.Services
         public async Task<ServiceResponse<NoContent>> Delete(Guid id)
         {
             var existModel = await repository.GetByIdQueryable(id).FirstOrDefaultAsync() ?? throw new ArgumentNullException();
-
             repository.Delete(existModel);
-
             await uow.SaveChangesAsync();
-
             return ServiceResponse<NoContent>.Success(StatusCodes.Status200OK);
         }
      

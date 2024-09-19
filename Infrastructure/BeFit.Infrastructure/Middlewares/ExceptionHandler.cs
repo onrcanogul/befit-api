@@ -13,7 +13,8 @@ namespace BeFit.Infrastructure.Extensions
             httpContext.Response.StatusCode = exception switch
             {
                 NotFoundException => 404,
-                BadRequestException => 400
+                BadRequestException => 400,
+                _ => 500
             };
 
             var response = ServiceResponse<NoContent>.Failure(exception.Message, httpContext.Response.StatusCode);

@@ -15,11 +15,8 @@ namespace BeFit.Infrastructure.Services
         public Token CreateToken(User user)
         {
             Token token = new();
-
             SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(configuration["Token:SecurityKey"]!));
-
             SigningCredentials signingCredentials = new(securityKey,SecurityAlgorithms.HmacSha256);
-
             token.Expiration = DateTime.UtcNow.AddMinutes(15);
 
             JwtSecurityToken jwtSecurityToken = new(
@@ -30,11 +27,9 @@ namespace BeFit.Infrastructure.Services
                 signingCredentials: signingCredentials,
                 claims: new List<Claim>()
             );
-
             JwtSecurityTokenHandler handler = new();
             token.AccessToken = handler.WriteToken(jwtSecurityToken);
             token.RefreshToken = CreateRefreshToken();
-
             return token;
         }
         private static string CreateRefreshToken()

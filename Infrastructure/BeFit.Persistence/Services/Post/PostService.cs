@@ -28,9 +28,7 @@ namespace BeFit.Persistence.Services.Post
                     .Include(x => x.Comments)
                         .ThenInclude(x => x.User)
                     .Include(x => x.Images).ToListAsync();
-
             var dto = mapper.Map<List<PostDto>>(posts);
-
             return ServiceResponse<List<PostDto>>.Success(dto, StatusCodes.Status200OK);
         }
         public async Task<ServiceResponse<PostDto>> GetById(Guid id)
@@ -45,9 +43,7 @@ namespace BeFit.Persistence.Services.Post
                     .Include(x => x.Comments)
                         .ThenInclude(x => x.User)
                     .Include(x => x.Images).FirstOrDefaultAsync();
-
             var dto = mapper.Map<PostDto>(post);
-
             return ServiceResponse<PostDto>.Success(dto, StatusCodes.Status200OK);
         }
         public async Task<ServiceResponse<List<PostDto>>> GetByUser(string id)
@@ -75,26 +71,20 @@ namespace BeFit.Persistence.Services.Post
             PostDto dto = new() { Id = Guid.NewGuid(), UserId = model.UserId, Title = model.Title, Description = model.Description }; 
             await repository.CreateAsync(mapper.Map<Domain.Entities.Post>(dto));
             await uow.SaveChangesAsync();
-            
             await imageService.Upload(model.Images, dto.Id, "post-images");
             return ServiceResponse<NoContent>.Success(StatusCodes.Status201Created);
         }
         public async Task<ServiceResponse<NoContent>> Update(UpdatePostDto model)
         {
             ArgumentNullException.ThrowIfNull(model);
-
             if (model.Id == Guid.Empty)
                 return ServiceResponse<NoContent>.Failure("id is null or empty", StatusCodes.Status400BadRequest);
-
             var currentEntity = await repository.GetByIdQueryable(model.Id).FirstOrDefaultAsync()
                 ?? throw new ArgumentNullException();
-
             currentEntity.Title = model.Title;
             currentEntity.Description = model.Description;
-
             repository.Update(currentEntity);
             await uow.SaveChangesAsync();
-
             return ServiceResponse<NoContent>.Success(StatusCodes.Status200OK);
         }
 
@@ -102,10 +92,8 @@ namespace BeFit.Persistence.Services.Post
         {
             if (id == Guid.Empty)
                 return ServiceResponse<NoContent>.Failure("id is null or empty", StatusCodes.Status400BadRequest);
-
             var currentEntity = await repository.GetByIdQueryable(id).FirstOrDefaultAsync() 
                 ?? throw new NotFoundException("post not found");
-
             repository.Delete(currentEntity);
             await uow.SaveChangesAsync();
             return ServiceResponse<NoContent>.Success(StatusCodes.Status200OK);
