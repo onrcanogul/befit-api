@@ -37,7 +37,7 @@ public class NutrientService<T, TDto>(IRepository<T> Repository, IMapper mapper,
         }
         public async Task<ServiceResponse<NoContent>> Delete(Guid id)
         {
-            var existEntity = await Repository.GetByIdQueryable(id).FirstOrDefaultAsync() ?? throw new ArgumentNullException();
+            var existEntity = await Repository.GetByIdQueryable(id).FirstOrDefaultAsync() ?? throw new NotFoundException(typeof(T) + " not found");
             Repository.Delete(existEntity);
             await uow.SaveChangesAsync();
             return ServiceResponse<NoContent>.Success(StatusCodes.Status204NoContent);

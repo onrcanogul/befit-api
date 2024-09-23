@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BeFit.Application.DataTransferObjects.Create;
+using BeFit.Application.DataTransferObjects.Friendship;
 using BeFit.Application.DataTransferObjects.Update;
 using BeFit.Domain.Entities;
 using BeFit.Domain.Entities.Abstract;
@@ -48,6 +49,7 @@ namespace BeFit.Application.Mapper
             CreateMap<UpdateUserPropertiesDto, UserProperties>().ReverseMap();
             CreateMap<CreateCategoryDto, Category>().ReverseMap();
             CreateMap<UpdateCategoryDto, Category>().ReverseMap();
+            CreateMap<Friendship, FriendshipDto>().ReverseMap();
         }
     }
 }
