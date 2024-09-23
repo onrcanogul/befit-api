@@ -12,7 +12,7 @@ namespace BeFit.Persistence.Services.Friendship
 {
     public class FriendshipService(IRepository<Domain.Entities.Friendship> repository, IMapper mapper, IUnitOfWork uow) : IFriendshipService
     {
-        public async Task<ServiceResponse<NoContent>> Send(FriendshipDto model)
+        public async Task<ServiceResponse<NoContent>> Send(SendFriendshipDto model)
         {
             var isExistingFriendship = repository.Any(f => f.SenderId == model.SenderId && f.ReceiverId == model.ReceiverId && 
                                                             (f.Status == FriendshipStatus.Pending || f.Status == FriendshipStatus.Accepted));

@@ -50,6 +50,7 @@ namespace BeFit.Application.Mapper
             CreateMap<CreateCategoryDto, Category>().ReverseMap();
             CreateMap<UpdateCategoryDto, Category>().ReverseMap();
             CreateMap<Friendship, FriendshipDto>().ReverseMap();
+            CreateMap<Friendship, SendFriendshipDto>().ReverseMap();
         }
     }
 }

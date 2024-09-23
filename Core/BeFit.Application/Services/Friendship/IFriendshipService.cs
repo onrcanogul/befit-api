@@ -5,7 +5,7 @@ namespace BeFit.Application.Services.Friendship;
 
 public interface IFriendshipService
 {
-    Task<ServiceResponse<NoContent>> Send(FriendshipDto friendship);
+    Task<ServiceResponse<NoContent>> Send(SendFriendshipDto friendship);
     Task<ServiceResponse<NoContent>> Accept(string senderId, string receiverId);
     Task<ServiceResponse<NoContent>> Reject(string senderId, string receiverId);
     Task<ServiceResponse<List<FriendshipDto>>> GetFriendshipsFromSender(string senderId);

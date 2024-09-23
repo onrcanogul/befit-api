@@ -1,6 +1,7 @@
 ﻿using BeFit.Application.Repositories;
 using BeFit.Application.Services;
 using BeFit.Application.Services.Category;
+using BeFit.Application.Services.Friendship;
 using BeFit.Application.Services.Identity;
 using BeFit.Application.Services.Image;
 using BeFit.Application.Services.Nutrient;
@@ -13,6 +14,7 @@ using BeFit.Infrastructure.Services;
 using BeFit.Persistence.Contexts;
 using BeFit.Persistence.Repositories;
 using BeFit.Persistence.Services;
+using BeFit.Persistence.Services.Friendship;
 using BeFit.Persistence.Services.Identity;
 using BeFit.Persistence.Services.Image;
 using BeFit.Persistence.Services.Nutrient;
@@ -50,6 +52,7 @@ namespace BeFit.Persistence
             services.AddScoped(typeof(IImageService<>), typeof(ImageService<>));
             services.AddScoped<INutrientPropertyService, NutrientPropertyService>();
             services.AddScoped(typeof(INutrientService<,>), typeof(NutrientService<,>));
+            services.AddScoped<IFriendshipService, FriendshipService>();
             return services;
         }
     }

@@ -2,7 +2,7 @@ using BeFit.Application.DataTransferObjects.Friendship;
 using BeFit.Application.Services.Friendship;
 
 namespace BeFit.Application.Features.Friendship.Commands.Send;
-public record SendFriendshipRequest(FriendshipDto Model) : IRequest<SendFriendshipResponse>;
+public record SendFriendshipRequest(SendFriendshipDto Model) : IRequest<SendFriendshipResponse>;
 public record SendFriendshipResponse(ServiceResponse<NoContent> Response);
 public class SendFriendshipRequestHandler(IFriendshipService service) : IRequestHandler<SendFriendshipRequest, SendFriendshipResponse>
 {
