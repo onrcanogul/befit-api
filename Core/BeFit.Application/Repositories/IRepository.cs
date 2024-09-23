@@ -16,5 +16,6 @@ namespace BeFit.Application.Repositories
         Task CreateRangeAsync(List<T> entities);
         void UpdateRangeAsync(List<T> entities);
         void DeleteRange(List<T> entities);
+        bool Any(Expression<Func<T, bool>>? predicate = null);
     }
 }

@@ -50,5 +50,10 @@ namespace BeFit.Persistence.Repositories
         {
             _context.UpdateRange(entities);
         }
+
+        public bool Any(Expression<Func<T, bool>>? predicate = null)
+        {
+            return _context.Any(predicate);
+        }
     }
 }
