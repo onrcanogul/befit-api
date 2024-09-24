@@ -19,6 +19,7 @@ namespace BeFit.Persistence.Services.Friendship
             if(isExistingFriendship)
                 throw new BadRequestException("Friendship is already exist");
             var friendship = mapper.Map<Domain.Entities.Friendship>(model);
+            friendship.Status = FriendshipStatus.Pending;
             await repository.CreateAsync(friendship);
             await uow.SaveChangesAsync();
             return ServiceResponse<NoContent>.Success(StatusCodes.Status201Created);

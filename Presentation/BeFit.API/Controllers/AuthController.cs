@@ -4,10 +4,7 @@ using BeFit.Application.Features.Auth.Commands.Register;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BeFit.API.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
+namespace BeFit.API.Controllers;
     public class AuthController(IMediator mediator) : CustomBaseController
     {
         [HttpPost("login")]
@@ -18,4 +15,3 @@ namespace BeFit.API.Controllers
         public async Task<IActionResult> Register(RegisterRequest request)
             => ControllerResponse((await mediator.Send(request)).Response);
     }
-}

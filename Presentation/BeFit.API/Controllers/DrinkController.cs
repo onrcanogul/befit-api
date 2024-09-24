@@ -8,8 +8,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 namespace BeFit.API.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
 public class DrinkController(IMediator mediator) : CustomBaseController
 {
     [HttpGet]

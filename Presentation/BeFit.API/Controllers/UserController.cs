@@ -5,10 +5,7 @@ using BeFit.Application.Features.User.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BeFit.API.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
+namespace BeFit.API.Controllers;
     public class UserController(IMediator mediator) : CustomBaseController
     {
         [HttpGet]
@@ -23,4 +20,4 @@ namespace BeFit.API.Controllers
         public async Task<IActionResult> Update([FromBody]UpdateUserRequest request)
             => ControllerResponse((await mediator.Send(request).ConfigureAwait(false)).Response);
     }
-}
+

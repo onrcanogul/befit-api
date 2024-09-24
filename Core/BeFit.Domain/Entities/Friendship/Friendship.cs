@@ -10,6 +10,6 @@ namespace BeFit.Domain.Entities
         public string ReceiverId { get; set; } = null!;
         public User Sender { get; set; } = null!;
         public User Receiver { get; set; } = null!;
-        public FriendshipStatus Status { get; set; } = FriendshipStatus.Pending;
+        public FriendshipStatus Status { get; set; }
     }
 }

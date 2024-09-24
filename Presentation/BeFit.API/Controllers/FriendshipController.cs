@@ -6,9 +6,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BeFit.API.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
 public class FriendshipController(IMediator mediator) : CustomBaseController
 {
     [HttpPost("send")]
@@ -21,22 +18,22 @@ public class FriendshipController(IMediator mediator) : CustomBaseController
     public async Task<IActionResult> Send(RejectFriendshipRequest request)
         => ControllerResponse((await mediator.Send(request)).Response);
     [HttpGet("getBySender")]
-    public async Task<IActionResult> Send(GetFriendshipFromSenderRequset request)
+    public async Task<IActionResult> Send([FromQuery]GetFriendshipFromSenderRequset request)
         => ControllerResponse((await mediator.Send(request)).Response);
     [HttpGet("getByReceiver")]
-    public async Task<IActionResult> Send(GetFriendshipFromReceiverRequset request)
+    public async Task<IActionResult> Send([FromQuery]GetFriendshipFromReceiverRequset request)
         => ControllerResponse((await mediator.Send(request)).Response);
     [HttpGet("getPendingByReceiver")]
-    public async Task<IActionResult> Send(GetPendingFriendshipFromReceiverRequest request)
+    public async Task<IActionResult> Send([FromQuery]GetPendingFriendshipFromReceiverRequest request)
         => ControllerResponse((await mediator.Send(request)).Response);
     [HttpGet("getPendingBySender")]
-    public async Task<IActionResult> Send(GetPendingFriendshipFromSenderRequest request)
+    public async Task<IActionResult> Send([FromQuery]GetPendingFriendshipFromSenderRequest request)
         => ControllerResponse((await mediator.Send(request)).Response);
     [HttpGet("getRejectedByReceiver")]
-    public async Task<IActionResult> Send(GetRejectedFriendshipFromReceiverRequest request)
+    public async Task<IActionResult> Send([FromQuery]GetRejectedFriendshipFromReceiverRequest request)
         => ControllerResponse((await mediator.Send(request)).Response);
     [HttpGet("getRejectedBySender")]
-    public async Task<IActionResult> Send(GetRejectedFriendshipFromSenderRequest request)
+    public async Task<IActionResult> Send([FromQuery]GetRejectedFriendshipFromSenderRequest request)
         => ControllerResponse((await mediator.Send(request)).Response);
     
 }

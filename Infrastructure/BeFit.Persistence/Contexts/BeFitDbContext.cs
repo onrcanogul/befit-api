@@ -36,6 +36,7 @@ namespace BeFit.Persistence.Contexts
         public DbSet<UserProperties> UserProperties { get; set; }
         public DbSet<Minerals> Minerals { get; set; }
         public DbSet<Vitamins> Vitamins { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

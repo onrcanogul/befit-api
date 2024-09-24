@@ -6,10 +6,7 @@ using BeFit.Application.Features.Comment.Queries.GetByPost;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BeFit.API.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
+namespace BeFit.API.Controllers;
     public class CommentController(IMediator mediator) : CustomBaseController
     {
         [HttpGet]
@@ -28,4 +25,3 @@ namespace BeFit.API.Controllers
         public async Task<IActionResult> Delete(DeleteCommentRequest request)
             => ControllerResponse((await mediator.Send(request)).Response);
     }
-}

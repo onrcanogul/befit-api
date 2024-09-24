@@ -6,10 +6,7 @@ using BeFit.Application.Features.PostLike.Queries.Likes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BeFit.API.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
+namespace BeFit.API.Controllers;
     public class LikeController(IMediator mediator) : CustomBaseController
     {
         [HttpGet("post-likes")]
@@ -28,4 +25,3 @@ namespace BeFit.API.Controllers
         public async Task<IActionResult> DislikePost(PostDislikeRequest request)
             => ControllerResponse((await mediator.Send(request)).Response);
     }
-}

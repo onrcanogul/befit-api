@@ -7,9 +7,6 @@ using BeFit.Application.Features.Food.Query.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 namespace BeFit.API.Controllers;
-
-[Route("api/[controller]")]
-[ApiController]
 public class FoodController(IMediator mediator) : CustomBaseController
 {
     [HttpGet]

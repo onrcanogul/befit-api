@@ -7,10 +7,7 @@ using BeFit.Application.Features.Category.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BeFit.API.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
+namespace BeFit.API.Controllers;
     public class CategoryController(IMediator mediator) : CustomBaseController
     {
         [HttpGet]
@@ -37,4 +34,3 @@ namespace BeFit.API.Controllers
         public async Task<IActionResult> Delete(DeleteCategoryRequest request)
             => ControllerResponse((await mediator.Send(request)).Response);
     }
-}
