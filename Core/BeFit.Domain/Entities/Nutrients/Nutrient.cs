@@ -10,5 +10,7 @@ namespace BeFit.Domain.Entities.Abstract
         public Guid PropertiesId { get; set; }
         public NutrientProperties Properties { get; set; } = null!;
         public List<NutrientImage> Images { get; set; } = null!;
+        public List<Category> Categories { get; set; } = new();
+
     }
 }

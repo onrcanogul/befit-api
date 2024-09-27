@@ -18,12 +18,12 @@ namespace BeFit.Persistence.Repositories
         public DbSet<T> _context => context.Set<T>();
         public IQueryable<T> GetQueryable(Expression<Func<T, bool>>? predicate = null)
         {
-            var query = _context.AsQueryable();
+            var query = _context.AsNoTracking().AsQueryable();
             return predicate == null ? query : query.Where(predicate);     
         }
         public IQueryable<T> GetByIdQueryable(Guid? id)
         {
-            return _context.Where(e => e.Id == id);
+            return _context.AsNoTracking().Where(e => e.Id == id);
         }
         public async Task<T> CreateAsync(T entity)
         {

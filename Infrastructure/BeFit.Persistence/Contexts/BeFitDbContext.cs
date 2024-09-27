@@ -11,10 +11,9 @@ namespace BeFit.Persistence.Contexts
 {
     public class BeFitDbContext : IdentityDbContext<User, Role, string>
     {
-        private readonly AuditInterceptor auditInterceptor;
-        public BeFitDbContext(DbContextOptions options, AuditInterceptor auditInterceptor) : base(options)
+        private readonly AuditInterceptor auditInterceptor =  new();
+        public BeFitDbContext(DbContextOptions options) : base(options)
         {
-            this.auditInterceptor = auditInterceptor;
         }
         public DbSet<Food> Foods { get; set; }
         public DbSet<Drink> Drinks { get; set; }

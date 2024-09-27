@@ -9,4 +9,5 @@ public interface INutrientService<T,TDto> where T : Domain.Entities.Abstract.Nut
     Task<ServiceResponse<NoContent>> Create(CreateNutrientDto model);
     Task<ServiceResponse<NoContent>> Delete(Guid id);
     Task<ServiceResponse<NoContent>> Update(UpdateNutrientDto model);
+    Task<ServiceResponse<List<TDto>>> Filter(FilterNutrientDto model);
 }

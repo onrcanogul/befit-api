@@ -7,5 +7,6 @@
         public NutrientPropertiesDto Properties { get; set; } = null!;
         public Guid ImageId { get; set; }
         public NutrientImageDto Image { get; set; } = null!;
+        public List<CategoryDto> Categories { get; set; } = new();
     }
 }

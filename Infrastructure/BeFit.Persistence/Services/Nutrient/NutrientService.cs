@@ -7,6 +7,7 @@ using BeFit.Application.Services.Nutrient;
 using BeFit.Application.Services.NutrientProperty;
 using BeFit.Domain.Entities;
 using BeFit.Infrastructure.Exceptions;
+using BeFit.Persistence.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,6 +53,16 @@ public class NutrientService<T, TDto>(IRepository<T> Repository, IMapper mapper,
             Repository.Update(entity);
             await uow.SaveChangesAsync();
             return ServiceResponse<NoContent>.Success(StatusCodes.Status200OK);
+        }
+        public async Task<ServiceResponse<List<TDto>>> Filter(FilterNutrientDto model)
+        {
+            var query = Repository.GetQueryable().Include(x => x.Properties).OrderBy(x => x.Name)
+                .WhereIf(model.Term != null, x => x.Name.Contains(model.Term) || x.Description.Contains(model.Term))
+                .WhereIf(model.CategoryIds.Count > 0, x => x.Categories.Any(y => y.Id == model.CategoryIds.First()))
+                .WhereIf(model.MaxCalorie != null, x => x.Properties.Calories <= model.MaxCalorie)
+                .WhereIf(model.MinCalorie != null, x => x.Properties.Calories >= model.MinCalorie);
+            var nutrients = mapper.Map<List<TDto>>(await query.ToListAsync());
+            return ServiceResponse<List<TDto>>.Success(nutrients, StatusCodes.Status200OK);
         }
         private static Domain.Entities.Abstract.Nutrient GetNutrient(CreateNutrientDto model)
         {

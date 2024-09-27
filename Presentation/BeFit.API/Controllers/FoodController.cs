@@ -2,6 +2,7 @@ using BeFit.API.Controllers.Base;
 using BeFit.Application.Features.Food.Command.Create;
 using BeFit.Application.Features.Food.Command.Delete;
 using BeFit.Application.Features.Food.Command.Update;
+using BeFit.Application.Features.Food.Query.Filter;
 using BeFit.Application.Features.Food.Query.Get;
 using BeFit.Application.Features.Food.Query.GetById;
 using MediatR;
@@ -11,6 +12,9 @@ public class FoodController(IMediator mediator) : CustomBaseController
 {
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery]GetFoodsRequest request)
+        => ControllerResponse((await mediator.Send(request)).Response);
+    [HttpGet("filter")]
+    public async Task<IActionResult> GetFilter([FromQuery]FilterFoodRequest request)
         => ControllerResponse((await mediator.Send(request)).Response);
     [HttpGet("{Id}")]
     public async Task<IActionResult> Get([FromRoute]GetFoodByIdRequest request)
@@ -24,4 +28,5 @@ public class FoodController(IMediator mediator) : CustomBaseController
     [HttpDelete("{Id}")]
     public async Task<IActionResult> Delete([FromRoute]DeleteFoodRequest request)
         => ControllerResponse((await mediator.Send(request)).Response);
+
 }

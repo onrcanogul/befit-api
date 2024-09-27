@@ -669,14 +669,14 @@ namespace BeFit.Persistence.Migrations
                     b.Property<decimal>("MaintenanceCalories")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("NeededCarbohydrateId")
-                        .HasColumnType("uuid");
+                    b.Property<decimal>("NeededCarbohydrate")
+                        .HasColumnType("numeric");
 
-                    b.Property<Guid>("NeededFatId")
-                        .HasColumnType("uuid");
+                    b.Property<decimal>("NeededFat")
+                        .HasColumnType("numeric");
 
-                    b.Property<Guid>("NeededProteinId")
-                        .HasColumnType("uuid");
+                    b.Property<decimal>("NeededProtein")
+                        .HasColumnType("numeric");
 
                     b.Property<decimal>("SuggestedFatRate")
                         .HasColumnType("numeric");
@@ -700,12 +700,6 @@ namespace BeFit.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityId");
-
-                    b.HasIndex("NeededCarbohydrateId");
-
-                    b.HasIndex("NeededFatId");
-
-                    b.HasIndex("NeededProteinId");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -1102,24 +1096,6 @@ namespace BeFit.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("ActivityId");
 
-                    b.HasOne("BeFit.Domain.Entities.Macros.Carbohydrate", "NeededCarbohydrate")
-                        .WithMany()
-                        .HasForeignKey("NeededCarbohydrateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BeFit.Domain.Entities.Macros.Fat", "NeededFat")
-                        .WithMany()
-                        .HasForeignKey("NeededFatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BeFit.Domain.Entities.Macros.Protein", "NeededProtein")
-                        .WithMany()
-                        .HasForeignKey("NeededProteinId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BeFit.Domain.Entities.Identity.User", "User")
                         .WithOne("Properties")
                         .HasForeignKey("BeFit.Domain.Entities.UserProperties", "UserId")
@@ -1127,12 +1103,6 @@ namespace BeFit.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Activity");
-
-                    b.Navigation("NeededCarbohydrate");
-
-                    b.Navigation("NeededFat");
-
-                    b.Navigation("NeededProtein");
 
                     b.Navigation("User");
                 });
