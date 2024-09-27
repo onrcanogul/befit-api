@@ -40,9 +40,9 @@ namespace BeFit.Persistence.Services.Identity
             model.WeightGainCalories = CalculateWeightGainCalories(model);
             model.SuggestedWeight = CalculateSuggestedWeight(model);
             model.SuggestedFatRate = CalculateSuggestedFatRate(model);
-            model.NeededProtein.Weight = CalculateNeededProtein(model); //make primitive
-            model.NeededCarbohydrate.Weight = CalculateNeededCarb(model); //make primitive
-            model.NeededFat.Weight = CalculateNeededFat(model); //make primitive
+            model.NeededProtein = CalculateNeededProtein(model); //make primitive
+            model.NeededCarbohydrate = CalculateNeededCarb(model); //make primitive
+            model.NeededFat = CalculateNeededFat(model); //make primitive
         }
         private static decimal CalculateMaintenanceCalories(UserProperties model)
         {
@@ -101,7 +101,7 @@ namespace BeFit.Persistence.Services.Identity
             var fat = CalculateNeededFat(model);
             var protein = CalculateNeededProtein(model);
             var fatCalorie = fat * 9;
-            var proteinCalorie = fat * 4;
+            var proteinCalorie = protein * 4;
             var carb = (model.DailyCalories - (fatCalorie + proteinCalorie)) / 4;
             return carb;
         }

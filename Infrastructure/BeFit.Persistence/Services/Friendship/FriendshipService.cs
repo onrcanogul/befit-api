@@ -27,10 +27,9 @@ namespace BeFit.Persistence.Services.Friendship
         public async Task<ServiceResponse<NoContent>> Accept(string senderId, string receiverId)
         {
             var friendship = await repository.GetQueryable()
-                .Where(f => f.SenderId == senderId 
+                .FirstOrDefaultAsync(f => f.SenderId == senderId 
                             && f.ReceiverId == receiverId
-                            && f.Status != FriendshipStatus.Rejected)
-                .FirstOrDefaultAsync() ?? throw new NotFoundException("Friendship not found");
+                            && f.Status != FriendshipStatus.Rejected) ?? throw new NotFoundException("Friendship not found");
             friendship.Status = FriendshipStatus.Accepted;
             repository.Update(friendship);
             await uow.SaveChangesAsync();

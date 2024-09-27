@@ -2,15 +2,19 @@
 using BeFit.Domain.Entities.Abstract;
 using BeFit.Domain.Entities.Identity;
 using BeFit.Domain.Entities.Macros;
+using BeFit.Persistence.Interceptors;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace BeFit.Persistence.Contexts
 {
     public class BeFitDbContext : IdentityDbContext<User, Role, string>
     {
-        public BeFitDbContext(DbContextOptions options) : base(options)
+        private readonly AuditInterceptor auditInterceptor;
+        public BeFitDbContext(DbContextOptions options, AuditInterceptor auditInterceptor) : base(options)
         {
+            this.auditInterceptor = auditInterceptor;
         }
         public DbSet<Food> Foods { get; set; }
         public DbSet<Drink> Drinks { get; set; }
@@ -74,13 +78,18 @@ namespace BeFit.Persistence.Contexts
                 .WithOne(u => u.Properties)
                 .HasForeignKey<UserProperties>(up => up.UserId);
             
-            
             builder.Entity<NutrientProperties>()
                 .HasOne(n => n.Nutrient)
                 .WithOne(n => n.Properties)
-                .HasForeignKey<NutrientProperties>(n => n.NutrientId);
+            .HasForeignKey<NutrientProperties>(n => n.NutrientId);
 
             base.OnModelCreating(builder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.AddInterceptors(auditInterceptor);
+            base.OnConfiguring(optionsBuilder);
         }
     }
 }
