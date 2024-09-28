@@ -14,7 +14,7 @@ namespace BeFit.Application.Mapper
     public class Mapping : Profile
     {
         public Mapping()
-        {
+        { 
             CreateMap<Nutrient, NutrientDto>();
             CreateMap<BaseEntity, BaseDto>();
             CreateMap<Food, FoodDto>().IncludeBase<Nutrient, NutrientDto>().ReverseMap();
