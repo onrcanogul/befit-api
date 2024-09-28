@@ -16,10 +16,6 @@ namespace BeFit.Application.Mapper
         public Mapping()
         { 
             CreateMap<Nutrient, NutrientDto>();
-
-            VVCCccc
-            VV
-
             CreateMap<BaseEntity, BaseDto>();
             CreateMap<Food, FoodDto>().IncludeBase<Nutrient, NutrientDto>().ReverseMap();
             CreateMap<Drink, DrinkDto>().IncludeBase<Nutrient, NutrientDto>().ReverseMap();
