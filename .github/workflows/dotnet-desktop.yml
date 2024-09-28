@@ -12,14 +12,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: CloneRepository
+      - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '8.0.x'
-      - name: Upload dependencies
+
+      - name: Restore dependencies
         run: dotnet restore
-      - name: Build Project
+
+      - name: Build project
         run: dotnet build --configuration Release --no-restore
-        continue-on-error: false
+
+
+      - name: Run tests
+        run: dotnet test --no-restore --verbosity normal
