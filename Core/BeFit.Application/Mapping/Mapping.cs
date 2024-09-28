@@ -4,6 +4,8 @@ using BeFit.Application.DataTransferObjects.Friendship;
 using BeFit.Application.DataTransferObjects.Update;
 using BeFit.Domain.Entities;
 using BeFit.Domain.Entities.Abstract;
+using BeFit.Domain.Entities.Base;
+using BeFit.Domain.Entities.Exercise;
 using BeFit.Domain.Entities.Identity;
 using BeFit.Domain.Entities.Macros;
 
@@ -14,11 +16,12 @@ namespace BeFit.Application.Mapper
         public Mapping()
         {
             CreateMap<Nutrient, NutrientDto>();
-
-            CreateMap<Food, FoodDto>()
-                .IncludeBase<Nutrient, NutrientDto>();
-            CreateMap<Drink, DrinkDto>()
-                .IncludeBase<Nutrient, NutrientDto>();
+            CreateMap<BaseEntity, BaseDto>();
+            CreateMap<Food, FoodDto>().IncludeBase<Nutrient, NutrientDto>().ReverseMap();
+            CreateMap<Drink, DrinkDto>().IncludeBase<Nutrient, NutrientDto>().ReverseMap();
+            CreateMap<Cardio, CardioDto>().IncludeBase<Exercise, ExerciseDto>().ReverseMap();
+            CreateMap<Training, TrainingDto>().IncludeBase<Exercise, ExerciseDto>().ReverseMap();
+            CreateMap<Exercise, ExerciseDto>().ReverseMap();
             CreateMap<NutrientDto, Nutrient>().ReverseMap();
             CreateMap<CategoryDto, Category>().ReverseMap();
             CreateMap<UserDto, User>().ReverseMap();

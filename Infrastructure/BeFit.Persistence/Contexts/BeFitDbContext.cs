@@ -1,17 +1,16 @@
-﻿using BeFit.Domain.Entities;
+﻿using System.Reflection;
+using BeFit.Domain.Entities;
 using BeFit.Domain.Entities.Abstract;
+using BeFit.Domain.Entities.Base;
 using BeFit.Domain.Entities.Identity;
 using BeFit.Domain.Entities.Macros;
-using BeFit.Persistence.Interceptors;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace BeFit.Persistence.Contexts
 {
     public class BeFitDbContext : IdentityDbContext<User, Role, string>
     {
-        private readonly AuditInterceptor auditInterceptor =  new();
         public BeFitDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -82,13 +81,23 @@ namespace BeFit.Persistence.Contexts
                 .WithOne(n => n.Properties)
             .HasForeignKey<NutrientProperties>(n => n.NutrientId);
 
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            optionsBuilder.AddInterceptors(auditInterceptor);
-            base.OnConfiguring(optionsBuilder);
+            var dataList = ChangeTracker.Entries<BaseEntity>();
+            foreach (var data in dataList)
+            {
+                _ = data.State switch
+                {
+                    EntityState.Added => data.Entity.CreatedDate = DateTime.UtcNow,
+                    EntityState.Modified => data.Entity.UpdatedDate = DateTime.UtcNow,
+                    _ => DateTime.UtcNow
+                };
+
+            }
+            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BeFit.Application.Repositories;
 using BeFit.Application.Services;
 using BeFit.Application.Services.Category;
+using BeFit.Application.Services.Exercise;
 using BeFit.Application.Services.Friendship;
 using BeFit.Application.Services.Identity;
 using BeFit.Application.Services.Image;
@@ -14,6 +15,7 @@ using BeFit.Infrastructure.Services;
 using BeFit.Persistence.Contexts;
 using BeFit.Persistence.Repositories;
 using BeFit.Persistence.Services;
+using BeFit.Persistence.Services.Exercise;
 using BeFit.Persistence.Services.Friendship;
 using BeFit.Persistence.Services.Identity;
 using BeFit.Persistence.Services.Image;
@@ -31,7 +33,10 @@ namespace BeFit.Persistence
     {
         public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<BeFitDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("PostgreSQL")));
+            services.AddDbContext<BeFitDbContext>(options =>
+            {
+                options.UseNpgsql(configuration.GetConnectionString("PostgreSQL"));
+            });
             services.AddIdentity<User, Role>(opt =>
             {
 
@@ -53,6 +58,7 @@ namespace BeFit.Persistence
             services.AddScoped<INutrientPropertyService, NutrientPropertyService>();
             services.AddScoped(typeof(INutrientService<,>), typeof(NutrientService<,>));
             services.AddScoped<IFriendshipService, FriendshipService>();
+            services.AddScoped(typeof(IExerciseService<,>), typeof(ExerciseService<,>));
             return services;
         }
     }
