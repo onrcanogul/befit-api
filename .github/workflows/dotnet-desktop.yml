@@ -1,0 +1,24 @@
+name: .NET CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CloneRepository
+        uses: actions/checkout@v2
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '7.0.x'
+      - name: Upload dependencies
+        run: dotnet restore
+      - name: Build Project
+        run: dotnet build --configuration Release --no-restore
