@@ -89,13 +89,15 @@ namespace BeFit.Persistence.Contexts
             var dataList = ChangeTracker.Entries<BaseEntity>();
             foreach (var data in dataList)
             {
-                _ = data.State switch
+                if (data.State == EntityState.Modified)
                 {
-                    EntityState.Added => data.Entity.CreatedDate = DateTime.UtcNow,
-                    EntityState.Modified => data.Entity.UpdatedDate = DateTime.UtcNow,
-                    _ => DateTime.UtcNow
-                };
-
+                    data.Entity.UpdatedDate = DateTime.UtcNow;
+                }
+                if (data.State == EntityState.Added)
+                {
+                    data.Entity.CreatedDate = DateTime.UtcNow;
+                    data.Entity.UpdatedDate = DateTime.UtcNow;
+                }
             }
             return await base.SaveChangesAsync(cancellationToken);
         }

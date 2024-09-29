@@ -34,7 +34,7 @@ public class NutrientService<T, TDto>(IRepository<T> Repository, IMapper mapper,
             await Repository.CreateAsync(nutrient);
             await uow.SaveChangesAsync();
             await propertyService.Create(model.Properties, nutrient.Id); //save changes in ps 
-            return ServiceResponse<NoContent>.Success(null, StatusCodes.Status201Created);
+            return ServiceResponse<NoContent>.Success(StatusCodes.Status201Created);
         }
         public async Task<ServiceResponse<NoContent>> Delete(Guid id)
         {
