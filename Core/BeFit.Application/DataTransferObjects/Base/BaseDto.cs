@@ -3,7 +3,7 @@
     public abstract class BaseDto
     {
         public Guid Id { get; set; }
-        public DateTime CreatedDate { get; }
-        public virtual DateTime UpdatedDate { get; }
+        public DateTime CreatedDate { get; set; }
+        public virtual DateTime UpdatedDate { get; set; }
     }
 }
