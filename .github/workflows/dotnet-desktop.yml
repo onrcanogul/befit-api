@@ -26,3 +26,9 @@ jobs:
 
       - name: Run tests
         run: dotnet test --no-restore --verbosity normal
+
+        
+      - name: Apply database migrations
+        run: dotnet ef database update --no-build --project "BeFit.Persistence.csproj"
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.DB_CONNECTION_STRING }}  # GitHub Secret'tan bağlantı dizisi
