@@ -33,7 +33,7 @@ namespace BeFit.Persistence.Contexts
         public DbSet<CommentLike> CommentLikes { get; set; }
         public DbSet<Dislike> Dislikes { get; set; }
         public DbSet<PostDislike> PostDislikes { get; set; }
-        public DbSet<CommentDislike> CommentDislikes { get; set; }ddd
+        public DbSet<CommentDislike> CommentDislikes { get; set; }ddddd
         public DbSet<NutrientProperties> NutrientProperties { get; set; }
         public DbSet<UserProperties> UserProperties { get; set; }
         public DbSet<Minerals> Minerals { get; set; }
