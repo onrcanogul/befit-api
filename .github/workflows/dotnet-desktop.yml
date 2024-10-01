@@ -26,3 +26,20 @@ jobs:
 
       - name: Run tests
         run: dotnet test --no-restore --verbosity normal
+
+      - name: Install dotnet-ef tool
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Add dotnet-ef to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test --no-restore --verbosity normal
+        
+      - name: Apply database migrations
+        run: dotnet ef database update --no-build --project "BeFit.Persistence.csproj"
+        env:
+          ConnectionStrings__DefaultConnection: ${{ secrets.DB_CONNECTION_STRING }}
