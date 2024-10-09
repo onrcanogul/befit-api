@@ -3,6 +3,7 @@ using System;
 using BeFit.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BeFit.Persistence.Migrations
 {
     [DbContext(typeof(BeFitDbContext))]
-    partial class BeFitDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241007195417_exercise")]
+    partial class exercise
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,6 +60,42 @@ namespace BeFit.Persistence.Migrations
                     b.HasDiscriminator().HasValue("Nutrient");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("BeFit.Domain.Entities.Cardio", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Minutes")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("WOBurnedCalorie")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Cardios");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.Category", b =>
@@ -173,43 +212,6 @@ namespace BeFit.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Activity");
-                });
-
-            modelBuilder.Entity("BeFit.Domain.Entities.Exercise.Exercise", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("character varying(8)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("WOBurnedCalorie")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Exercises");
-
-                    b.HasDiscriminator().HasValue("Exercise");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.Friendship", b =>
@@ -681,6 +683,45 @@ namespace BeFit.Persistence.Migrations
                     b.ToTable("Salt");
                 });
 
+            modelBuilder.Entity("BeFit.Domain.Entities.Training", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("BurnedCaloriePer12Reps")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Reps")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("WOBurnedCalorie")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Trainings");
+                });
+
             modelBuilder.Entity("BeFit.Domain.Entities.UserProperties", b =>
                 {
                     b.Property<Guid>("Id")
@@ -953,45 +994,6 @@ namespace BeFit.Persistence.Migrations
                     b.HasDiscriminator().HasValue("PostDislike");
                 });
 
-            modelBuilder.Entity("BeFit.Domain.Entities.Cardio", b =>
-                {
-                    b.HasBaseType("BeFit.Domain.Entities.Exercise.Exercise");
-
-                    b.Property<decimal>("Minutes")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasIndex("UserId");
-
-                    b.HasDiscriminator().HasValue("Cardio");
-                });
-
-            modelBuilder.Entity("BeFit.Domain.Entities.Training", b =>
-                {
-                    b.HasBaseType("BeFit.Domain.Entities.Exercise.Exercise");
-
-                    b.Property<decimal>("BurnedCaloriePer12Reps")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("Reps")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Exercises", t =>
-                        {
-                            t.Property("UserId")
-                                .HasColumnName("Training_UserId");
-                        });
-
-                    b.HasDiscriminator().HasValue("Training");
-                });
-
             modelBuilder.Entity("BeFit.Domain.Entities.CategoryImage", b =>
                 {
                     b.HasBaseType("BeFit.Domain.Entities.Image");
@@ -1054,6 +1056,13 @@ namespace BeFit.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.HasDiscriminator().HasValue("PostLike");
+                });
+
+            modelBuilder.Entity("BeFit.Domain.Entities.Cardio", b =>
+                {
+                    b.HasOne("BeFit.Domain.Entities.Identity.User", null)
+                        .WithMany("Cardios")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.Category", b =>
@@ -1176,6 +1185,13 @@ namespace BeFit.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("NutrientProperties");
+                });
+
+            modelBuilder.Entity("BeFit.Domain.Entities.Training", b =>
+                {
+                    b.HasOne("BeFit.Domain.Entities.Identity.User", null)
+                        .WithMany("Trainings")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.UserProperties", b =>
@@ -1307,20 +1323,6 @@ namespace BeFit.Persistence.Migrations
                     b.Navigation("Post");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BeFit.Domain.Entities.Cardio", b =>
-                {
-                    b.HasOne("BeFit.Domain.Entities.Identity.User", null)
-                        .WithMany("Cardios")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("BeFit.Domain.Entities.Training", b =>
-                {
-                    b.HasOne("BeFit.Domain.Entities.Identity.User", null)
-                        .WithMany("Trainings")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("BeFit.Domain.Entities.CategoryImage", b =>

@@ -38,9 +38,7 @@ namespace BeFit.Persistence
                 options.UseNpgsql(configuration.GetConnectionString("PostgreSQL"));
             });
             services.AddIdentity<User, Role>(opt =>
-            {
-
-            }).AddEntityFrameworkStores<BeFitDbContext>();
+            { }).AddEntityFrameworkStores<BeFitDbContext>();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<ICategoryService, CategoryService>();
@@ -59,6 +57,8 @@ namespace BeFit.Persistence
             services.AddScoped(typeof(INutrientService<,>), typeof(NutrientService<,>));
             services.AddScoped<IFriendshipService, FriendshipService>();
             services.AddScoped(typeof(IExerciseService<,>), typeof(ExerciseService<,>));
+            services.AddScoped<ICardioService, CardioService>();
+            services.AddScoped<ITrainingService, TrainingService>();
             return services;
         }
     }

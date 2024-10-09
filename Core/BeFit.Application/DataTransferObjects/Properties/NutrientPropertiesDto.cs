@@ -1,4 +1,6 @@
 ﻿using System.Text.Json.Serialization;
+using BeFit.Application.DataTransferObjects.FoodBasket;
+using BeFit.Domain.Entities.FoodBasket;
 
 namespace BeFit.Application.DataTransferObjects
 {
@@ -6,30 +8,33 @@ namespace BeFit.Application.DataTransferObjects
     {
         public Guid NutrientId { get; set; }
         public decimal Calories { get; set; }
+        //Macros
+        public decimal Protein100gr { get; set; } = default!;
+        public decimal Fat100gr { get; set; } = default!;
+        public decimal CholesterolWeight100gr { get; set; } = default!;
+        public decimal Carbohydrate100gr { get; set; } = default!;
+        public decimal Salt100gr { get; set; } = default!;
+        public decimal SugarWeight100gr { get; set; } = default!;
+        //Micros
+
+        public decimal Sodium100gr { get; set; } = default;
+        public decimal Magnesium100gr { get; set; } = default;
         
         //Macros
-        public decimal Protein { get; set; } = default!;
-        public decimal Fat { get; set; } = default!;
-        public decimal CholesterolWeight { get; set; } = default!; //miligram
-        public decimal Carbohydrate { get; set; } = default!;
-        public decimal Salt { get; set; } = default!;
-        public decimal SugarWeight { get; set; } = default!;
+        public decimal Protein { get; set; }
+        public decimal Fat { get; set; }
+        public decimal CholesterolWeight { get; set; }
+        public decimal Carbohydrate { get; set; }
+        public decimal Salt { get; set; }
+        public decimal SugarWeight { get; set; }
         //Micros
-        public decimal B2 { get; set; } = default!;
-        public decimal B1 { get; set; } = default!;
-        public decimal B3 { get; set; } = default!;
-        public decimal B12 { get; set; } = default!;
-        public decimal E { get; set; } = default!;
-        public decimal FolicAcid { get; set; } = default!;
-        public decimal Calcium { get; set; } = default;
-        public decimal Sulfur { get; set; } = default;
-        public decimal Iron { get; set; } = default;
-        public decimal Potassium { get; set; } = default;
-        public decimal Sodium { get; set; } = default;
-        public decimal Magnesium { get; set; } = default;
-        public decimal Phosphorus { get; set; } = default;
+        public decimal Sodium { get; set; }
+        public decimal Magnesium { get; set; }
+
+        
         //Navigation
         [JsonIgnore]
         public NutrientDto? Nutrient { get; set; } = null!;
+
     }
 }
