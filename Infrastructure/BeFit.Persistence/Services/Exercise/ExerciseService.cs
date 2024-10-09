@@ -3,13 +3,15 @@ using BeFit.Application.Common;
 using BeFit.Application.DataTransferObjects;
 using BeFit.Application.Repositories;
 using BeFit.Application.Services.Exercise;
+using BeFit.Domain.Entities.Identity;
 using BeFit.Infrastructure.Exceptions;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace BeFit.Persistence.Services.Exercise;
 
-public class ExerciseService<T, TDto>(IRepository<T> repository, IUnitOfWork uow, IMapper mapper)
+public class ExerciseService<T, TDto>(IRepository<T> repository, Microsoft.AspNetCore.Identity.UserManager<User> userRepository, IUnitOfWork uow, IMapper mapper)
     : IExerciseService<T, TDto> where T : Domain.Entities.Exercise.Exercise where TDto : ExerciseDto
 {
     public async Task<ServiceResponse<List<TDto>>> Get(int page, int size)

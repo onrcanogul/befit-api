@@ -2,6 +2,7 @@
 using BeFit.Domain.Entities;
 using BeFit.Domain.Entities.Abstract;
 using BeFit.Domain.Entities.Base;
+using BeFit.Domain.Entities.Exercise;
 using BeFit.Domain.Entities.Identity;
 using BeFit.Domain.Entities.Macros;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -39,6 +40,9 @@ namespace BeFit.Persistence.Contexts
         public DbSet<Minerals> Minerals { get; set; }
         public DbSet<Vitamins> Vitamins { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<Exercise> Exercises { get; set; }
+        public DbSet<Training> Trainings { get; set; }
+        public DbSet<Cardio> Cardios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -48,7 +52,7 @@ namespace BeFit.Persistence.Contexts
             .HasValue<Drink>("Drink");
             builder.Entity<Nutrient>()
             .ToTable("Nutrients");
-
+            
             builder.Entity<Image>()
             .HasDiscriminator<string>("Discriminator")
             .HasValue<NutrientImage>("FoodImage")

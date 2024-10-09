@@ -45,13 +45,9 @@ namespace BeFit.Persistence.Services
                     StatusCodes.Status500InternalServerError);
             return ServiceResponse<NoContent>.Success(StatusCodes.Status204NoContent);
         }
+
         private IQueryable<User> UserQuery(IQueryable<User> userQuery)
             => userQuery.Include(n => n.Comments)
-                .Include(n => n.Properties)
-                    .ThenInclude(ns => ns.NeededCarbohydrate)
-                .Include(n => n.Properties)
-                    .ThenInclude(ns => ns.NeededFat)
-                .Include(n => n.Properties)
-                    .ThenInclude(ns => ns.NeededProtein);
+                .Include(n => n.Properties);
     }
 }

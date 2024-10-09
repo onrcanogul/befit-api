@@ -17,7 +17,8 @@ namespace BeFit.Domain.Entities.Identity
         public List<CommentDislike> CommentDislikes { get; set; } = new();
         public List<PostLike> PostLikes { get; set; } = new();
         public List<PostDislike> PostDislikes { get; set; } = new();
-        public List<Exercise.Exercise> Exercises { get; set; } = new();
+        public List<Training> Trainings { get; set; } = new();
+        public List<Cardio> Cardios { get; set; } = new();
 
     }
 }
