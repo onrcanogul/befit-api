@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using BeFit.Application.DataTransferObjects.Create;
+using BeFit.Application.DataTransferObjects.FoodBasket;
 using BeFit.Application.DataTransferObjects.Friendship;
 using BeFit.Application.DataTransferObjects.Update;
 using BeFit.Domain.Entities;
 using BeFit.Domain.Entities.Abstract;
 using BeFit.Domain.Entities.Base;
 using BeFit.Domain.Entities.Exercise;
+using BeFit.Domain.Entities.FoodBasket;
 using BeFit.Domain.Entities.Identity;
 using BeFit.Domain.Entities.Macros;
 
@@ -54,6 +56,8 @@ namespace BeFit.Application.Mapper
             CreateMap<UpdateCategoryDto, Category>().ReverseMap();
             CreateMap<Friendship, FriendshipDto>().ReverseMap();
             CreateMap<Friendship, SendFriendshipDto>().ReverseMap();
+            CreateMap<BasketItem, BasketItemDto>().ReverseMap();
+            CreateMap<FoodBasket, FoodBasketDto>().ReverseMap();
         }
     }
 }

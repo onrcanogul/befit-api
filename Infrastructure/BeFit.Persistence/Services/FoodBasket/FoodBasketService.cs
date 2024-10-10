@@ -2,6 +2,7 @@ using AutoMapper;
 using BeFit.Application.Common;
 using BeFit.Application.DataTransferObjects.FoodBasket;
 using BeFit.Application.Repositories;
+using BeFit.Application.Services.FoodBasket;
 using BeFit.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -9,13 +10,14 @@ using Microsoft.EntityFrameworkCore;
 namespace BeFit.Persistence.Services.FoodBasket;
 
 public class FoodBasketService(IRepository<Domain.Entities.FoodBasket.FoodBasket> repository, IRepository<Domain.Entities.Abstract.Nutrient> nutrientRepository, IMapper mapper, IUnitOfWork uow)
+: IFoodBasketService
 {
     public async Task<ServiceResponse<FoodBasketDto>> Get(string userId)
     {
         var basket = await repository.GetQueryable()
                 .Include(x => x.Nutrients)
-                .ThenInclude(x => x.Nutrient)
-                .ThenInclude(x => x.Properties).FirstOrDefaultAsync(x => x.UserId == userId)
+                     .ThenInclude(x => x.Nutrient)
+                        .ThenInclude(x => x.Properties).FirstOrDefaultAsync(x => x.UserId == userId)
             ?? throw new NotFoundException("Food basket not found");
         
         var dto = mapper.Map<FoodBasketDto>(basket);
@@ -47,15 +49,15 @@ public class FoodBasketService(IRepository<Domain.Entities.FoodBasket.FoodBasket
     {
         basket.Nutrients.ForEach(x =>
         {
-            x.Nutrient.Properties.Calories = x.Nutrient.Properties.Calories * x.Grammage / 100;
-            x.Nutrient.Properties.Carbohydrate = x.Nutrient.Properties.Carbohydrate100gr * x.Grammage / 100;
-            x.Nutrient.Properties.Protein = x.Nutrient.Properties.Protein100gr * x.Grammage / 100;
-            x.Nutrient.Properties.Fat = x.Nutrient.Properties.Fat100gr * x.Grammage / 100;
-            x.Nutrient.Properties.Magnesium = x.Nutrient.Properties.Magnesium100gr * x.Grammage / 100;
-            x.Nutrient.Properties.Salt = x.Nutrient.Properties.Salt100gr * x.Grammage / 100;
-            x.Nutrient.Properties.CholesterolWeight = x.Nutrient.Properties.CholesterolWeight100gr * x.Grammage / 100;
-            x.Nutrient.Properties.Sodium = x.Nutrient.Properties.Sodium100gr * x.Grammage / 100;
-            x.Nutrient.Properties.SugarWeight = x.Nutrient.Properties.SugarWeight100gr * x.Grammage / 100;
+            x.Nutrient.Properties.Calories = x.Nutrient.Properties.Calories * x.Measure / 100;
+            x.Nutrient.Properties.Carbohydrate = x.Nutrient.Properties.Carbohydrate100gr * x.Measure / 100;
+            x.Nutrient.Properties.Protein = x.Nutrient.Properties.Protein100gr * x.Measure / 100;
+            x.Nutrient.Properties.Fat = x.Nutrient.Properties.Fat100gr * x.Measure / 100;
+            x.Nutrient.Properties.Magnesium = x.Nutrient.Properties.Magnesium100gr * x.Measure / 100;
+            x.Nutrient.Properties.Salt = x.Nutrient.Properties.Salt100gr * x.Measure / 100;
+            x.Nutrient.Properties.CholesterolWeight = x.Nutrient.Properties.CholesterolWeight100gr * x.Measure / 100;
+            x.Nutrient.Properties.Sodium = x.Nutrient.Properties.Sodium100gr * x.Measure / 100;
+            x.Nutrient.Properties.SugarWeight = x.Nutrient.Properties.SugarWeight100gr * x.Measure / 100;
         });
     }
     

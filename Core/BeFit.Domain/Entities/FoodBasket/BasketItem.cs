@@ -10,5 +10,4 @@ public class BasketItem : BaseEntity
     public Nutrient Nutrient { get; set; }
     public decimal Measure { get; set; }
     public FoodBasket Basket { get; set; }
-
 }

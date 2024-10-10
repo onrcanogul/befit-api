@@ -2,6 +2,7 @@
 using BeFit.Application.Services;
 using BeFit.Application.Services.Category;
 using BeFit.Application.Services.Exercise;
+using BeFit.Application.Services.FoodBasket;
 using BeFit.Application.Services.Friendship;
 using BeFit.Application.Services.Identity;
 using BeFit.Application.Services.Image;
@@ -16,6 +17,7 @@ using BeFit.Persistence.Contexts;
 using BeFit.Persistence.Repositories;
 using BeFit.Persistence.Services;
 using BeFit.Persistence.Services.Exercise;
+using BeFit.Persistence.Services.FoodBasket;
 using BeFit.Persistence.Services.Friendship;
 using BeFit.Persistence.Services.Identity;
 using BeFit.Persistence.Services.Image;
@@ -59,6 +61,8 @@ namespace BeFit.Persistence
             services.AddScoped(typeof(IExerciseService<,>), typeof(ExerciseService<,>));
             services.AddScoped<ICardioService, CardioService>();
             services.AddScoped<ITrainingService, TrainingService>();
+            services.AddScoped<IFoodBasketService, FoodBasketService>();
+            services.AddScoped<IBasketItemService, BasketItemService>();
             return services;
         }
     }
