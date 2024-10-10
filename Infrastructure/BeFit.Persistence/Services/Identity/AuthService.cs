@@ -1,5 +1,6 @@
 ﻿using BeFit.Application.Common;
 using BeFit.Application.DataTransferObjects;
+using BeFit.Application.Services.FoodBasket;
 using BeFit.Application.Services.Identity;
 using BeFit.Application.Services.Token;
 using BeFit.Domain.Entities.Identity;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeFit.Persistence.Services.Identity
 {
-    public class AuthService(UserManager<User> userManager, ITokenHandler tokenHandler) : IAuthService
+    public class AuthService(UserManager<User> userManager, ITokenHandler tokenHandler, IFoodBasketService foodBasketService) : IAuthService
     {
         public async Task<ServiceResponse<Token>> Login(LoginDto model)
         {
@@ -37,6 +38,9 @@ namespace BeFit.Persistence.Services.Identity
                 Surname = model.Surname
             };
             var result = await userManager.CreateAsync(user, model.Password);
+            
+            await foodBasketService.Create(user.Id);
+            
             return !result.Succeeded ? ServiceResponse<NoContent>.Failure(result.Errors.Select(x => x.Description).ToList(), StatusCodes.Status500InternalServerError) :
                 ServiceResponse<NoContent>.Success(StatusCodes.Status201Created);
         }

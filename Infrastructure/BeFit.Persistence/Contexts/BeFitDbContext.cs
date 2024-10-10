@@ -3,6 +3,7 @@ using BeFit.Domain.Entities;
 using BeFit.Domain.Entities.Abstract;
 using BeFit.Domain.Entities.Base;
 using BeFit.Domain.Entities.Exercise;
+using BeFit.Domain.Entities.FoodBasket;
 using BeFit.Domain.Entities.Identity;
 using BeFit.Domain.Entities.Macros;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -43,7 +44,8 @@ namespace BeFit.Persistence.Contexts
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Training> Trainings { get; set; }
         public DbSet<Cardio> Cardios { get; set; }
-
+        public DbSet<FoodBasket> FoodBaskets { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Nutrient>()
