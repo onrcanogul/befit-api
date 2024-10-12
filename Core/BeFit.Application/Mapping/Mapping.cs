@@ -19,8 +19,6 @@ namespace BeFit.Application.Mapper
         { 
             CreateMap<Nutrient, NutrientDto>();
             CreateMap<BaseEntity, BaseDto>();
-            CreateMap<Food, FoodDto>().IncludeBase<Nutrient, NutrientDto>().ReverseMap();
-            CreateMap<Drink, DrinkDto>().IncludeBase<Nutrient, NutrientDto>().ReverseMap();
             CreateMap<Cardio, CardioDto>().IncludeBase<Exercise, ExerciseDto>().ReverseMap();
             CreateMap<Training, TrainingDto>().IncludeBase<Exercise, ExerciseDto>().ReverseMap();
             CreateMap<Exercise, ExerciseDto>().ReverseMap();
@@ -36,7 +34,6 @@ namespace BeFit.Application.Mapper
             CreateMap<SaltDto, Salt>().ReverseMap();
             CreateMap<MineralsDto, Minerals>().ReverseMap();
             CreateMap<Vitamins, VitaminsDto>().ReverseMap();
-            CreateMap<Drink, DrinkDto>().ReverseMap();
             CreateMap<CommentDislike, CommentDislikeDto>().ReverseMap();
             CreateMap<CommentLike, CommentLikeDto>().ReverseMap();
             CreateMap<LikeDto, Like>().ReverseMap();
@@ -58,6 +55,8 @@ namespace BeFit.Application.Mapper
             CreateMap<Friendship, SendFriendshipDto>().ReverseMap();
             CreateMap<BasketItem, BasketItemDto>().ReverseMap();
             CreateMap<FoodBasket, FoodBasketDto>().ReverseMap();
+            CreateMap<Nutrient, CreateNutrientDto>().ReverseMap();
+            CreateMap<Nutrient, NutrientDto>().ReverseMap();
         }
     }
 }

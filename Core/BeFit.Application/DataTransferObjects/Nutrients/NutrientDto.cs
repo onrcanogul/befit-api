@@ -1,6 +1,6 @@
 ﻿namespace BeFit.Application.DataTransferObjects
 {
-    public abstract class NutrientDto : BaseDto
+    public class NutrientDto : BaseDto
     {
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;

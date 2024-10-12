@@ -18,9 +18,7 @@ namespace BeFit.Persistence.Services
         public async Task<ServiceResponse<List<CategoryDto>>> Get()
         {
             var categories = await repository.GetQueryable()
-                .Include(x => x.Drinks)
-                    .ThenInclude(x => x.Properties)
-                .Include(x => x.Foods)
+                .Include(x => x.Nutrients)
                     .ThenInclude(x => x.Properties)
                  .Include(x => x.Images).ToListAsync();
             var list = mapper.Map<List<CategoryDto>>(categories);
@@ -29,9 +27,7 @@ namespace BeFit.Persistence.Services
         public async Task<ServiceResponse<CategoryDto>> GetById(Guid id)
         {
             var category = await repository.GetByIdQueryable(id)
-                .Include(x => x.Drinks)
-                    .ThenInclude(x => x.Properties)
-                .Include(x => x.Foods)
+                .Include(x => x.Nutrients)
                     .ThenInclude(x => x.Properties)
                  .Include(x => x.Images).FirstOrDefaultAsync();
             var list = mapper.Map<CategoryDto>(category);

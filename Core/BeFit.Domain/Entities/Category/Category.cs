@@ -1,4 +1,5 @@
-﻿using BeFit.Domain.Entities.Base;
+﻿using BeFit.Domain.Entities.Abstract;
+using BeFit.Domain.Entities.Base;
 
 namespace BeFit.Domain.Entities
 {
@@ -7,8 +8,7 @@ namespace BeFit.Domain.Entities
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
 
-        public List<Food> Foods { get; set; } = new();
-        public List<Drink> Drinks { get; set; } = new();
+        public List<Nutrient> Nutrients { get; set; } = new();
         public List<CategoryImage> Images { get; set; } = new();
     }
 }

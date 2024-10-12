@@ -10,6 +10,16 @@ builder.Services
     .AddPersistenceServices(builder.Configuration)
     .AddApplicationServices()
     .AddInfrastructureServices(builder.Configuration);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
 builder.Services.AddControllers().AddNewtonsoftJson(x => 
     x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddExceptionHandler<ExceptionHandler>();
@@ -22,6 +32,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.UseAuthentication();
+app.UseCors("AllowAll");
 app.UseAuthorization();
 app.UseExceptionHandler(options => { });
 app.MapControllers();

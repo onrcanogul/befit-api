@@ -16,8 +16,6 @@ namespace BeFit.Persistence.Contexts
         public BeFitDbContext(DbContextOptions options) : base(options)
         {
         }
-        public DbSet<Food> Foods { get; set; }
-        public DbSet<Drink> Drinks { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Nutrient> Nutrients { get; set; }
         public DbSet<Post> Posts { get; set; }
@@ -48,13 +46,6 @@ namespace BeFit.Persistence.Contexts
         public DbSet<BasketItem> BasketItems { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Nutrient>()
-            .HasDiscriminator<string>("Discriminator")
-            .HasValue<Food>("Food")
-            .HasValue<Drink>("Drink");
-            builder.Entity<Nutrient>()
-            .ToTable("Nutrients");
-            
             builder.Entity<Image>()
             .HasDiscriminator<string>("Discriminator")
             .HasValue<NutrientImage>("FoodImage")

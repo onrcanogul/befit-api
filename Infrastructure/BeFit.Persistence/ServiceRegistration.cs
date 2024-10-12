@@ -56,7 +56,7 @@ namespace BeFit.Persistence
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IImageService<>), typeof(ImageService<>));
             services.AddScoped<INutrientPropertyService, NutrientPropertyService>();
-            services.AddScoped(typeof(INutrientService<,>), typeof(NutrientService<,>));
+            services.AddScoped<INutrientService, NutrientService>();
             services.AddScoped<IFriendshipService, FriendshipService>();
             services.AddScoped(typeof(IExerciseService<,>), typeof(ExerciseService<,>));
             services.AddScoped<ICardioService, CardioService>();
