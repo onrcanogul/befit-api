@@ -18,7 +18,7 @@ namespace BeFit.Application.Common
             => new() { Data = data, StatusCode = StatusCode, IsSuccessful = true };
 
         public static ServiceResponse<NoContent> Success(int StatusCode)
-            => new() { StatusCode = StatusCode, Data = default, IsSuccessful = false };
+            => new() { StatusCode = StatusCode, Data = default, IsSuccessful = true };
 
         public static ServiceResponse<T> Failure(List<string> errors, int statusCode)
             => new() { Errors = errors, StatusCode = statusCode, IsSuccessful = false };

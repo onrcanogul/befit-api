@@ -19,13 +19,21 @@ namespace BeFit.Infrastructure.Services
             SigningCredentials signingCredentials = new(securityKey,SecurityAlgorithms.HmacSha256);
             token.Expiration = DateTime.UtcNow.AddMinutes(15);
 
+
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("UserName", user.UserName),
+                new Claim("Id", user.Id.ToString())
+            };
+            
             JwtSecurityToken jwtSecurityToken = new(
                 issuer: configuration["Token:Issuer"],
                 audience: configuration["Token:Audience"],
                 notBefore: DateTime.UtcNow,
                 expires: token.Expiration,
                 signingCredentials: signingCredentials,
-                claims: new List<Claim>()
+                claims: claims
             );
             JwtSecurityTokenHandler handler = new();
             token.AccessToken = handler.WriteToken(jwtSecurityToken);
