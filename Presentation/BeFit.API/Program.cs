@@ -1,39 +1,31 @@
-using BeFit.Infrastructure.Extensions;
+using BeFit.API;
 
 var builder = WebApplication.CreateBuilder(args);
-// Add services to the container.
 
+// Add services to the DI.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services
     .AddPersistenceServices(builder.Configuration)
     .AddApplicationServices()
-    .AddInfrastructureServices(builder.Configuration);
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader();
-        });
-});
+    .AddInfrastructureServices(builder.Configuration)
+    .AddSwaggerServices()
+    .AddExceptionHandler()
+    .AddCors();
+
 builder.Services.AddControllers().AddNewtonsoftJson(x => 
     x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-builder.Services.AddExceptionHandler<ExceptionHandler>();
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwaggerServices()
+    .UseExceptionHandler()
+    .UseCors();
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
-app.UseCors("AllowAll");
 app.UseAuthorization();
-app.UseExceptionHandler(options => { });
+
 app.MapControllers();
 app.Run();

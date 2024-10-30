@@ -18,9 +18,9 @@ namespace BeFit.Application.DataTransferObjects
         public decimal? MaintenanceCalories { get; set; }
         public Activity? Activity { get; set; }
         public BodyDecision? BodyDecision { get; set; }
-        public ProteinDto NeededProtein { get; set; }  
-        public CarbohydrateDto NeededCarbohydrate { get; set; }
-        public FatDto NeededFat { get; set; }
+        public decimal NeededProtein { get; set; }
+        public decimal NeededCarbohydrate { get; set; }
+        public decimal NeededFat { get; set; }
         public string UserId { get; set; } = null!;
         [JsonIgnore]
         public UserDto User { get; set; } = null!;

@@ -7,5 +7,6 @@ namespace BeFit.Application.Services.Identity
     {
         Task<ServiceResponse<NoContent>> Create(CreateUserPropertiesDto model);
         Task<ServiceResponse<NoContent>> Update(UpdateUserPropertiesDto model);
+        Task<ServiceResponse<UserPropertiesDto>> Get(string userId);
     }
 }

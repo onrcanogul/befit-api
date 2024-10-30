@@ -21,7 +21,6 @@
     <Folder Include="Features\Auth\Queries\" />
     <Folder Include="Features\BasketItem\Query\" />
     <Folder Include="Features\NutrientProperties\Query\" />
-    <Folder Include="Features\UserProperties\Queries\" />
   </ItemGroup>
 
 </Project>
