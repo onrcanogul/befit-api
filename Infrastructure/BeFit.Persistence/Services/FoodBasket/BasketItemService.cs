@@ -7,21 +7,30 @@ using BeFit.Domain.Entities.FoodBasket;
 using BeFit.Infrastructure.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BeFit.Persistence.Services.FoodBasket;
 
-public class BasketItemService(IRepository<BasketItem> repository, IMapper mapper, IUnitOfWork uow)
+public class BasketItemService(IRepository<BasketItem> repository,IRepository<Domain.Entities.FoodBasket.FoodBasket> basketRepository, IMapper mapper, IUnitOfWork uow)
 : IBasketItemService
 {
     public async Task<ServiceResponse<NoContent>> Add(AddItemDto model)
     {
-        var basketItem = new BasketItem
-        {
-            NutrientId = model.NutrientId, BasketId = model.BasketId, Measure = model.Grammage
-        };
-        await repository.CreateAsync(basketItem);
+        var basket = await basketRepository
+                         .GetQueryable(x => x.UserId == model.UserId.ToString())
+                         .Include(x => x.Nutrients)
+                         .FirstOrDefaultAsync()
+            ?? throw new NotFoundException("Basket not found");
+        var basketItem = basket.Nutrients.FirstOrDefault(x => x.NutrientId == model.NutrientId);
+        if (basketItem != null)
+            basketItem.Measure += model.Grammage;
+        else
+            basket.Nutrients.Add(new BasketItem
+            {
+                NutrientId = model.NutrientId, Measure = model.Grammage
+            });
+        basketRepository.Update(basket);
         await uow.SaveChangesAsync();
-        
         return ServiceResponse<NoContent>.Success(StatusCodes.Status200OK);
     }
     public async Task<ServiceResponse<NoContent>> Delete(Guid id)

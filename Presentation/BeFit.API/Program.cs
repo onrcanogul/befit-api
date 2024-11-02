@@ -11,8 +11,18 @@ builder.Services
     .AddApplicationServices()
     .AddInfrastructureServices(builder.Configuration)
     .AddSwaggerServices()
-    .AddExceptionHandler()
-    .AddCors();
+    .AddExceptionHandler();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        corsPolicyBuilder =>  
+        {
+            corsPolicyBuilder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
 
 builder.Services.AddControllers().AddNewtonsoftJson(x => 
     x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -20,8 +30,9 @@ builder.Services.AddControllers().AddNewtonsoftJson(x =>
 var app = builder.Build();
 
 app.UseSwaggerServices()
-    .UseExceptionHandler()
-    .UseCors();
+    .UseExceptionHandler();
+
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
