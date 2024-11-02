@@ -57,6 +57,8 @@ namespace BeFit.Application.Mapper
             CreateMap<FoodBasket, FoodBasketDto>().ReverseMap();
             CreateMap<Nutrient, CreateNutrientDto>().ReverseMap();
             CreateMap<Nutrient, NutrientDto>().ReverseMap();
+            CreateMap<SaveBasketDto, FoodBasket>().ReverseMap();
+            CreateMap<SaveBasketDto, FoodBasketDto>().ReverseMap();
         }
     }
 }

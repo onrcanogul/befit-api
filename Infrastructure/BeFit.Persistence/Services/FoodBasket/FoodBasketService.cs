@@ -25,13 +25,25 @@ public class FoodBasketService(IRepository<Domain.Entities.FoodBasket.FoodBasket
         SetTotals(dto);
         return ServiceResponse<FoodBasketDto>.Success(dto, StatusCodes.Status200OK);
     }
-    
     public async Task<ServiceResponse<NoContent>> Create(string userId)
     {
         var basket = new Domain.Entities.FoodBasket.FoodBasket { UserId = userId, Id = Guid.NewGuid() };
         await repository.CreateAsync(basket);
         await uow.SaveChangesAsync();
         return ServiceResponse<NoContent>.Success(StatusCodes.Status201Created);
+    }
+    
+    public async Task<ServiceResponse<FoodBasketDto>> Save(SaveBasketDto model)
+    {
+        var basket = await repository.GetQueryable(x => x.Id == model.BasketId)
+                         .Include(x => x.Nutrients)
+                         .FirstOrDefaultAsync()
+                     ?? throw new NotFoundException("Food basket not found");
+        UpdateBasketNutrients(basket, model.NewItems);
+        SetTotals(mapper.Map<FoodBasketDto>(model));
+        await uow.SaveChangesAsync();
+        var dto = mapper.Map<FoodBasketDto>(basket);
+        return ServiceResponse<FoodBasketDto>.Success(dto, StatusCodes.Status200OK);
     }
     
     public async Task<ServiceResponse<NoContent>> Clear(Guid basketId)
@@ -61,7 +73,13 @@ public class FoodBasketService(IRepository<Domain.Entities.FoodBasket.FoodBasket
         });
     }
     
-    private static void SetTotals(FoodBasketDto basket)
+    private void UpdateBasketNutrients(Domain.Entities.FoodBasket.FoodBasket basket, List<BasketItemDto> newItems)
+    { 
+        foreach (var newItem in newItems)
+            mapper.Map(newItem, basket.Nutrients.First(n => n.Id == newItem.Id));
+        repository.Update(basket);
+    }
+    private static void SetTotals(FoodBasketDto basket) //includelere bakılcak
     {
        basket.TotalCalorie = basket.Nutrients.Sum(x => x.Nutrient.Properties.Calories);
        basket.TotalCarb = basket.Nutrients.Sum(x => x.Nutrient.Properties.Carbohydrate);

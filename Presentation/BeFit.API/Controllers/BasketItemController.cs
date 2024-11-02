@@ -15,7 +15,7 @@ public class BasketItemController(IMediator mediator) : CustomBaseController
     [HttpPut]
     public async Task<IActionResult> Update(UpdateBasketItemRequest request)
         => ControllerResponse((await mediator.Send(request)).Response);
-    [HttpDelete]
-    public async Task<IActionResult> Delete(DeleteBasketItemRequest request)
-        => ControllerResponse((await mediator.Send(request)).Response);
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+        => ControllerResponse((await mediator.Send(new DeleteBasketItemRequest(id))).Response);
 }    

@@ -1,5 +1,7 @@
 using BeFit.API.Controllers.Base;
+using BeFit.Application.DataTransferObjects.FoodBasket;
 using BeFit.Application.Features.Basket.Command.Clear;
+using BeFit.Application.Features.Basket.Command.Save;
 using BeFit.Application.Features.Basket.Query.Get;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,9 @@ public class BasketController(IMediator mediator) : CustomBaseController
 {
     [HttpGet("{UserId}")]
     public async Task<IActionResult> Get([FromRoute]GetBasketRequest request)
+        => ControllerResponse((await mediator.Send(request)).Response);
+    [HttpPost("save")]
+    public async Task<IActionResult> Save(SaveBasketRequest request)
         => ControllerResponse((await mediator.Send(request)).Response);
     [HttpPost]
     public async Task<IActionResult> Clear(ClearBasketRequest request)
