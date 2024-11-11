@@ -11,7 +11,6 @@ namespace BeFit.API.Controllers;
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
             => ControllerResponse((await mediator.Send(request)).Response);
-
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterRequest request)
             => ControllerResponse((await mediator.Send(request)).Response);
